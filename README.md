@@ -1,11 +1,22 @@
-# ecommerce-pweb
-Projeto de ecommerce para cadeira de Prog Web I
+# Sobre
 
+Esse é um projeto de ecommerce para a cadeira de Progamação Web I
 
-Passo a passo: (Eu acho, não testei)
+## Installation
 
-Instalar node js, npm e git;
-Clonar o projeto;
-Rodar -> npm install (instala os pacotes)
-nodemon index.js (roda o projeto)
+Download git, node js e npm.
 
+Then, clone the repo and run the following to download project packages:
+
+```bash
+npm install
+```
+
+Finally:
+
+```bash
+nodemon index.js
+```
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
