@@ -15,7 +15,7 @@ npm install
 Finally:
 
 ```bash
-nodemon index.js
+sails lift
 ```
 
 ## License
