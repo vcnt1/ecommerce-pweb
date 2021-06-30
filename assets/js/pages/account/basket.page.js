@@ -1,0 +1,82 @@
+parasails.registerPage('basket', {
+  //  ╦╔╗╔╦╔╦╗╦╔═╗╦    ╔═╗╔╦╗╔═╗╔╦╗╔═╗
+  //  ║║║║║ ║ ║╠═╣║    ╚═╗ ║ ╠═╣ ║ ║╣
+  //  ╩╝╚╝╩ ╩ ╩╩ ╩╩═╝  ╚═╝ ╩ ╩ ╩ ╩ ╚═╝
+  data: {
+    items: [{
+        id: 0,
+        nome: 'Maçã',
+        valor: 2,
+        imagem: "maca.jpg",
+        qtd:2
+      }, 
+      {
+        id: 1,
+        nome: 'Pêra',
+        valor: 3,
+        imagem: "pera.jpg",
+        qtd:1
+      }, 
+      {
+        id: 2,
+        nome: 'Banana',
+        valor: 5,
+        imagem: "banana.png",
+        qtd:4
+      }, 
+      {
+        id: 3,
+        nome: 'Uva',
+        valor: 8,
+        imagem: "uva.jpg",
+        qtd:5
+      },
+    ],
+    total: 0,
+    bought: false
+  },
+
+  //  ╦  ╦╔═╗╔═╗╔═╗╦ ╦╔═╗╦  ╔═╗
+  //  ║  ║╠╣ ║╣ ║  ╚╦╝║  ║  ║╣
+  //  ╩═╝╩╚  ╚═╝╚═╝ ╩ ╚═╝╩═╝╚═╝
+  beforeMount: function() {
+    //…
+  },
+  mounted: async function(){
+    this.refreshValue()
+  },
+
+  //  ╦╔╗╔╔╦╗╔═╗╦═╗╔═╗╔═╗╔╦╗╦╔═╗╔╗╔╔═╗
+  //  ║║║║ ║ ║╣ ╠╦╝╠═╣║   ║ ║║ ║║║║╚═╗
+  //  ╩╝╚╝ ╩ ╚═╝╩╚═╩ ╩╚═╝ ╩ ╩╚═╝╝╚╝╚═╝
+  methods: {
+    subQtd: function(id){
+      this.items.map(item => {
+        if(item.id === id) {
+          item.qtd-=1;
+        }
+      });
+      this.refreshValue();
+    },
+
+    addQtd: function(id){
+      this.items.map(item => {
+        if(item.id === id) {
+
+          item.qtd+=1;
+        }
+      });
+      this.refreshValue();
+    },
+    refreshValue: function(){
+      totalValor=0
+      this.items.map(item => totalValor+= item.qtd * item.valor)
+      this.total =  totalValor.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})
+    },
+    success: function() {
+      this.bought=true;
+    }
+    // Private methods not tied to a particular DOM event are prefixed with _
+
+  }
+});

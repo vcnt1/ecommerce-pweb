@@ -35,6 +35,7 @@ parasails.registerPage('homepage', {
       var heightToSet = $(window).height();
       heightToSet = Math.max(heightToSet, 500);//« ensure min height of 500px - header height
       heightToSet = Math.min(heightToSet, 1000);//« ensure max height of 1000px - header height
+      console.log(heightToSet)
       $hero.css('min-height', heightToSet - headerHeight+'px');
     },
 

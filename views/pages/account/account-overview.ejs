@@ -1,11 +1,11 @@
 <div id="account-overview" v-cloak>
   <account-notification-banner></account-notification-banner>
   <div class="container pt-5 pb-5">
-    <h1>My account</h1>
+    <h1>Minha conta</h1>
     <hr/>
     <div class="row mb-3">
       <div class="col-sm-6">
-        <h4>Personal information</h4>
+        <h4>Informações pessoais</h4>
       </div>
       <div class="col-sm-6">
         <span class="float-sm-right">
@@ -14,39 +14,39 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-3">Name:</div>
+      <div class="col-3">Nome:</div>
       <div class="col"><strong>{{me.fullName}}</strong></div>
     </div>
     <div class="row">
-      <div class="col-3">Email:</div>
+      <div class="col-3">E-mail:</div>
       <div class="col">
         <strong :class="[me.emailStatus === 'unconfirmed' || me.emailStatus === 'change-requested' ? 'text-muted' : '']">{{me.emailChangeCandidate ? me.emailChangeCandidate : me.emailAddress}}</strong>
-        <span v-if="me.emailStatus === 'unconfirmed' || me.emailStatus === 'change-requested'" class="badge badge-pill badge-warning">Unverified</span>
+        <span v-if="me.emailStatus === 'unconfirmed' || me.emailStatus === 'change-requested'" class="badge badge-pill badge-warning">não verificado</span>
       </div>
     </div>
     <hr/>
     <div class="row mb-3">
       <div class="col-sm-6">
-        <h4>Password</h4>
+        <h4>Senha</h4>
       </div>
       <div class="col-sm-6">
         <span class="float-sm-right">
-          <a style="width: 150px" class="btn btn-sm btn-outline-info" href="/account/password">Change password</a>
+          <a style="width: 150px" class="btn btn-sm btn-outline-info" href="/account/password">Mudar senha</a>
         </span>
       </div>
     </div>
     <div class="row">
-      <div class="col-3">Password:</div>
+      <div class="col-3">Senha:</div>
       <div class="col"><strong>••••••••••</strong></div>
     </div>
     <hr/>
-    <div class="row mb-3" v-if="isBillingEnabled">
+     <div class="row mb-3" v-if="isBillingEnabled">
       <div class="col-sm-6">
-        <h4>Billing</h4>
+        <h4>Cobrança</h4>
       </div>
       <div class="col-sm-6">
         <span class="float-sm-right">
-          <button style="width: 150px;" class="btn btn-sm btn-outline-info" @click="clickUpdateBillingCardButton()">{{ me.hasBillingCard ? 'Change card' : '+ Add card' }}</button>
+          <button style="width: 150px;" class="btn btn-sm btn-outline-info" @click="clickUpdateBillingCardButton()">{{ me.hasBillingCard ? 'Mudar cartão' : '+ adicionar cartão' }}</button>
         </span>
       </div>
     </div>
@@ -66,7 +66,7 @@
     <div class="alert alert-secondary" v-else-if="isBillingEnabled">
       You have not linked a payment source to your account. In order to access paid features, you'll need to provide your credit card information. (Don't worry: you will only be charged when you've reached the limit of your free plan.)
     </div>
-  </div>
+  </div> 
 
   <% /* Modify Card Info Modal */ %>
   <modal v-if="modal === 'update-billing-card'" @close="closeModal()" v-cloak>
@@ -86,9 +86,9 @@
         <button type="button" class="btn btn-outline-danger mr-2" data-dismiss="modal">Cancel</button>
       </div>
     </ajax-form>
-  </modal>
+  </modal> 
 
-  <% /* Confirm Remove Card Info Modal */ %>
+   <% /* Confirm Remove Card Info Modal */ %>
   <modal v-if="modal === 'remove-billing-card'" @close="closeModal()" v-cloak>
     <div class="modal-header">
       <h5 class="modal-title">Remove Card Info?</h5>
@@ -105,5 +105,5 @@
       </div>
     </ajax-form>
   </modal>
-</div>
+</div> 
 <%- /* Expose locals as `window.SAILS_LOCALS` :: */ exposeLocalsToBrowser() %>
