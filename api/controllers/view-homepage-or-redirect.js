@@ -24,12 +24,14 @@ module.exports = {
 
 
   fn: async function () {
+    var bc = await CompraDAO.abcde({ id: 1, clienteId: 1 });
 
     if (this.req.me) {
+
       throw {redirect:'/welcome'};
     }
 
-    return {};
+    return res.send('Hi there!');
 
   }
 
