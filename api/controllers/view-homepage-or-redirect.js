@@ -1,39 +1,32 @@
+const ClienteDAO = require("../daos/ClienteDAO");
+const CompraDAO = require("../daos/CompraDAO");
+
 module.exports = {
 
 
-  friendlyName: 'View homepage or redirect',
+    friendlyName: 'View homepage or redirect',
 
 
-  description: 'Display or redirect to the appropriate homepage, depending on login status.',
+    description: 'Display or redirect to the appropriate homepage, depending on login status.',
 
 
-  exits: {
+    exits: {
 
-    success: {
-      statusCode: 200,
-      description: 'Requesting user is a guest, so show the public landing page.',
-      viewTemplatePath: 'pages/homepage'
+        success: {
+            statusCode: 200,
+            description: 'Requesting user is a guest, so show the public landing page.',
+            viewTemplatePath: 'pages/homepage'
+        },
+
+        redirect: {
+            responseType: 'redirect',
+            description: 'Requesting user is logged in, so redirect to the internal welcome page.'
+        },
+
     },
 
-    redirect: {
-      responseType: 'redirect',
-      description: 'Requesting user is logged in, so redirect to the internal welcome page.'
-    },
 
-  },
-
-
-  fn: async function () {
-    var bc = await CompraDAO.abcde({ id: 1, clienteId: 1 });
-
-    if (this.req.me) {
-
-      throw {redirect:'/welcome'};
+    fn: async function () {
+        let bc = await ClienteDAO.create({id: 5, nome: 'abc', endereco: 'abc teste', email: 'abc@abc.com', login: 'teste', senha: 'teste'});
     }
-
-    return res.send('Hi there!');
-
-  }
-
-
 };
