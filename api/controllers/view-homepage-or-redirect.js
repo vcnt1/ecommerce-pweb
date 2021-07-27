@@ -27,12 +27,6 @@ module.exports = {
 
 
     fn: async function () {
-        let clientes = await ClienteDAO.list();
 
-        if(clientes.rows == 'undefined') {}
-
-        return {
-            clientes: clientes.rows
-        };
     }
 };

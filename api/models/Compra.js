@@ -7,12 +7,6 @@
 module.exports = {
     tableName: 'compras',
     attributes: {
-        id: {
-            type: 'number',
-            required: true,
-            unique: true,
-            columnName: 'id'
-        },
         clienteId: {
             type: 'number',
             columnName: 'cliente_id'
