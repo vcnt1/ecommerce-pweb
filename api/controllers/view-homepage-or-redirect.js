@@ -27,6 +27,12 @@ module.exports = {
 
 
     fn: async function () {
-        let bc = await ClienteDAO.create({id: 5, nome: 'abc', endereco: 'abc teste', email: 'abc@abc.com', login: 'teste', senha: 'teste'});
+        let clientes = await ClienteDAO.list();
+
+        if(clientes.rows == 'undefined') {}
+
+        return {
+            clientes: clientes.rows
+        };
     }
 };
