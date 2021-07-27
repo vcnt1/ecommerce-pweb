@@ -12,11 +12,15 @@ module.exports = {
     async update(params) {
         let query = 'UPDATE clientes SET'
         if(params.nome) {
-            query += `nome = ${params.nome},`
+            query += ` nome = ${params.nome},`
         }
 
         if(params.email) {
-            query += `email = ${params.email},`
+            query += ` email = ${params.email},`
+        }
+
+        if(params.endereco) {
+            query += ` endereco = ${params.endereco},`
         }
 
         query += 'WHERE id = ' + params.id + ';'
