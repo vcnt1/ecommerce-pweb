@@ -28,21 +28,5 @@ module.exports = {
 
     fn: async function () {
 
-        let lastCliente = await Cliente.find()
-            .sort('id DESC')
-            .limit(1)
-
-        let newId = lastCliente[0] ? parseInt(lastCliente[0].id) + 1 : 1
-        let newUserRecord = await Cliente.create({
-                id: newId,
-                nome: 'nome',
-                email: 'email',
-                login: 'login',
-                senha: 'senha',
-                endereco: 'endereco',
-            }
-        ).fetch();
-
-        console.log(newUserRecord)
     }
 };
