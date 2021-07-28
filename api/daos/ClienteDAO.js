@@ -39,7 +39,6 @@ module.exports = {
         }
 
         query += ` ${attributes.join(',')} WHERE id = ${params.id};`
-
         return await sails.getDatastore().sendNativeQuery(query)
     },
     async deleteById(id) {
