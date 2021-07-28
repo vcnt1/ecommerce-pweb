@@ -1,4 +1,7 @@
 module.exports = {
+    async selectById(id) {
+        return await sails.getDatastore().sendNativeQuery('SELECT * FROM produtos WHERE id = $1;', [id])
+    },
     async list() {
         sails.getDatastore().sendNativeQuery('SELECT * FROM produtos;', [], function (err, rawResult) {
             if (e) {
@@ -40,16 +43,6 @@ module.exports = {
                     console.log(rawResult)
                     return rawResult;
             });
-        });
-    },
-    async selectById(params) {
-        sails.getDatastore().sendNativeQuery('SELECT * FROM produtos WHERE id = $1;', [params.id], function (err, rawResult) {
-            if (err) {
-                console.log(err)
-                return err
-            }
-            console.log(rawResult)
-            return rawResult;
         });
     },
     async delete(params) {
