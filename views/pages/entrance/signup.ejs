@@ -1,23 +1,28 @@
 <div id="signup" v-cloak>
   <div class="container-fluid pt-5 pb-5" v-if="!cloudSuccess">
-    <h1 class="text-center">Crie a sua conta aqui{{this.req}}</h1>
-    <div style="max-width: 450px;" class="mx-auto" >
+    <% if(req.session.isAdmin) { %>
+    <h1 class="text-center">Crie uma conta de <strong><u>administrador</u></strong> </h1>
+    <% } else { %>
+      <h1 class="text-center">Crie a sua conta de <strong><u>clientes</u></strong></h1>
       <p class="text-center">Vamos começar! Tornar-se um membro é gratuito e leva apenas alguns minutos.</p>
+    <% } %>
+    <div style="max-width: 450px;" class="mx-auto" >
+      
       <hr/>
       <ajax-form action="signup" :syncing.sync="syncing" :cloud-error.sync="cloudError" :form-errors.sync="formErrors" :form-data="formData" :form-rules="formRules" @submitted="submittedForm()">
         <div class="form-group">
           <label for="nome">Nome completo</label>
-          <input class="form-control" id="nome" type="text"  :class="[formErrors.nome ? 'is-invalid' : '']" v-model.trim="formData.nome" placeholder="Sturgis P. Sturgeon" autocomplete="name" focus-first>
+          <input class="form-control" id="nome" type="text"  :class="[formErrors.nome ? 'is-invalid' : '']" v-model.trim="formData.nome" placeholder="Nome completo" autocomplete="name" focus-first>
           <div class="invalid-feedback" v-if="formErrors.nome">Por favor digite seu nome completo.</div>
         </div>
         <div class="form-group">
           <label for="loginn">Login</label>
-          <input class="form-control" id="loginn" type="text"  :class="[formErrors.login ? 'is-invalid' : '']" v-model.trim="formData.login" placeholder="Sturgis P. Sturgeon" autocomplete="name">
+          <input class="form-control" id="loginn" type="text"  :class="[formErrors.login ? 'is-invalid' : '']" v-model.trim="formData.login" placeholder="Login" autocomplete="login">
           <div class="invalid-feedback" v-if="formErrors.login">Por favor digite seu Login</div>
         </div>
         <div class="form-group">
           <label for="email">Endereço de e-mail</label>
-          <input class="form-control" id="email" type="email"  :class="[formErrors.email ? 'is-invalid' : '']" v-model.trim="formData.email" placeholder="sturgeon@example.com" autocomplete="email">
+          <input class="form-control" id="email" type="email"  :class="[formErrors.email ? 'is-invalid' : '']" v-model.trim="formData.email" placeholder="mail@example.com" autocomplete="email">
           <div class="invalid-feedback" v-if="formErrors.email">Por favor insira um endereço de e-mail válido.</div>
         </div>
         <div class="form-group">
@@ -25,6 +30,7 @@
           <input class="form-control" id="senha" type="password"  :class="[formErrors.senha ? 'is-invalid' : '']" v-model.trim="formData.senha" placeholder="••••••••" autocomplete="new-password">
           <div class="invalid-feedback" v-if="formErrors.senha">Por favor insira uma senha.</div>
         </div>
+        <% if(!req.session.isAdmin) { %>
         <div class="form-group">
           <label for="endereco">Endereço</label>
           <input class="form-control" id="endereco" type="text"  :class="[formErrors.endereco ? 'is-invalid' : '']" v-model.trim="formData.endereco" placeholder="Sturgis P. Sturgeon" autocomplete="name">
@@ -32,11 +38,14 @@
         </div>
         <cloud-error v-if="cloudError==='emailAlreadyInUse'">Parece que já existe usuário cadastrado com esse e-mail. Se esqueceu sua senha, você pode recuperar <a href="password/forgot">aqui</a>.</cloud-error>
         <cloud-error v-else-if="cloudError"></cloud-error>
+        <% } %>
         <div class="form-group">
           <ajax-button type="submit" :syncing="syncing" class="btn-dark btn-lg btn-block">Criar conta</ajax-button>
         </div>
       </ajax-form>
+      <% if(!req.session.userId) { %>
       <p class="text-center">Tem uma conta? <a href="/login">Logue</a></p>
+      <% } %>
     </div>
   </div>
   <div class="container-fluid pt-5 pb-5" v-if="cloudSuccess">

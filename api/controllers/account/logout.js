@@ -36,6 +36,8 @@ actually logged in.  (If they weren't, then this action is just a no-op.)`,
 
     // Clear the `userId` property from this session.
     delete this.req.session.userId;
+    delete this.req.session.login;
+    delete this.req.session.isAdmin;
 
     // Broadcast a message that we can display in other open tabs.
     if (sails.hooks.sockets) {

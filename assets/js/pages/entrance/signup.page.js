@@ -33,6 +33,13 @@ parasails.registerPage('signup', {
   //  ║  ║╠╣ ║╣ ║  ╚╦╝║  ║  ║╣
   //  ╩═╝╩╚  ╚═╝╚═╝ ╩ ╚═╝╩═╝╚═╝
   beforeMount: function() {
+    if(!!this.me){
+      if(this.me.isAdmin){
+        this.formRules.endereco= { required : false}
+      }
+    } else {
+      
+    }
   },
   mounted: async function() {
     //…

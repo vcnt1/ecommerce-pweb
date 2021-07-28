@@ -234,7 +234,7 @@ will be disabled and/or hidden in the UI.
                 delete sanitizedUser.password;
               }//ﬁ
 
-              res.locals.me = sanitizedUser;
+              res.locals.me = {isAdmin: req.session.isAdmin, ...sanitizedUser};
 
               // Include information on the locals as to whether billing features
               // are enabled for this app, and whether email verification is required.

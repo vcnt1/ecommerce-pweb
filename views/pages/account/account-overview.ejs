@@ -15,12 +15,12 @@
     </div>
     <div class="row">
       <div class="col-3">Nome:</div>
-      <div class="col"><strong>{{me.fullName}}</strong></div>
+      <div class="col"><strong>{{me.nome}}</strong></div>
     </div>
     <div class="row">
       <div class="col-3">E-mail:</div>
       <div class="col">
-        <strong :class="[me.emailStatus === 'unconfirmed' || me.emailStatus === 'change-requested' ? 'text-muted' : '']">{{me.emailChangeCandidate ? me.emailChangeCandidate : me.emailAddress}}</strong>
+        <strong :class="[me.emailStatus === 'unconfirmed' || me.emailStatus === 'change-requested' ? 'text-muted' : '']">{{me.emailChangeCandidate ? me.emailChangeCandidate : me.email}}</strong>
         <span v-if="me.emailStatus === 'unconfirmed' || me.emailStatus === 'change-requested'" class="badge badge-pill badge-warning">não verificado</span>
       </div>
     </div>

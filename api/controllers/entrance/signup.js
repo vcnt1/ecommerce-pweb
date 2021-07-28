@@ -41,7 +41,7 @@ the account verification message.)`,
         },
 
         endereco: {
-            required: true,
+            required: false,
             type: 'string',
         },
 
@@ -88,7 +88,7 @@ the account verification message.)`,
             .limit(1)
 
           let newId = lastAdministrador[0] ? parseInt(lastAdministrador[0].id) + 1 : 1
-          await Administrador.create({
+          newUserRecord = await Administrador.create({
                   id: newId,
                   nome: nome,
                   email: email,
@@ -96,7 +96,7 @@ the account verification message.)`,
                   senha: senha,
               }
           ).fetch();
-
+          
         } else {
         let lastCliente = await Cliente.find()
             .sort('id DESC')

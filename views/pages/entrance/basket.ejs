@@ -1,6 +1,6 @@
 <div id="basket" v-cloak>
   <div class="container pt-5 pb-5">
-    <h1>Itens em sua cesta:</h1>
+    <h1 v-if="!bought">Itens em sua cesta:</h1>
 
     <hr/>
     <ul>
@@ -31,9 +31,13 @@
         <h1 style="color: green;" v-if="bought">Compra realizada! :D</h1>
       </div>
     </ul>
-    <h2>Total: {{total}}</h2>
+    <h2 v-if="!bought">Total: {{total}}</h2>
     <div class="d-flex w-100 justify-content-center"> 
-      <button  @click="success()" class="btn btn-outline-info mt-3">Comprar</button>
+      <% if(me) {%>
+        <button  @click="success()" class="btn btn-outline-info mt-3" v-if="!bought">Comprar</button>
+      <% } else { %>
+        <button  @click="fail()" class="btn btn-outline-info mt-3" v-if="!bought">Comprar</button>
+      <% } %> 
     </div>
   </div>
 </div>

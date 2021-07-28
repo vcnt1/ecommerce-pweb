@@ -40,10 +40,9 @@ parasails.registerPage('basket', {
   //  ║  ║╠╣ ║╣ ║  ╚╦╝║  ║  ║╣
   //  ╩═╝╩╚  ╚═╝╚═╝ ╩ ╚═╝╩═╝╚═╝
   beforeMount: function() {
-    //…
   },
   mounted: async function(){
-    this.refreshValue()
+    this.refreshValue();
   },
 
   //  ╦╔╗╔╔╦╗╔═╗╦═╗╔═╗╔═╗╔╦╗╦╔═╗╔╗╔╔═╗
@@ -74,7 +73,10 @@ parasails.registerPage('basket', {
       this.total =  totalValor.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})
     },
     success: function() {
-      this.bought=true;
+        this.bought=true;
+    },
+    fail: function() {
+      this.goto("/login")
     }
     // Private methods not tied to a particular DOM event are prefixed with _
 
