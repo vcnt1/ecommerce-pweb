@@ -12,11 +12,11 @@ parasails.registerPage('signup', {
 
     // Form rules
     formRules: {
-      fullName: {required: true},
-      emailAddress: {required: true, isEmail: true},
-      password: {required: true},
-      confirmPassword: {required: true, sameAs: 'password'},
-      agreed: {required: true},
+      nome: {required: true},
+      login: {required: true},
+      email: {required: true, isEmail: true},
+      endereco: {required: true},
+      senha: {required: true}
     },
 
     // Syncing / loading state
@@ -33,7 +33,6 @@ parasails.registerPage('signup', {
   //  ║  ║╠╣ ║╣ ║  ╚╦╝║  ║  ║╣
   //  ╩═╝╩╚  ╚═╝╚═╝ ╩ ╚═╝╩═╝╚═╝
   beforeMount: function() {
-    //…
   },
   mounted: async function() {
     //…
@@ -43,7 +42,6 @@ parasails.registerPage('signup', {
   //  ║║║║ ║ ║╣ ╠╦╝╠═╣║   ║ ║║ ║║║║╚═╗
   //  ╩╝╚╝ ╩ ╚═╝╩╚═╩ ╩╚═╝ ╩ ╩╚═╝╝╚╝╚═╝
   methods: {
-
     submittedForm: async function() {
       if(this.isEmailVerificationRequired) {
         // If email confirmation is enabled, show the success message.

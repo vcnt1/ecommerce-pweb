@@ -63,14 +63,41 @@ the account verification message.)`,
 
         emailAlreadyInUse: {
             statusCode: 409,
-            description: 'The provided email address is already in use.',
+            description: 'The provided email address or login is already in use.',
         },
 
     },
 
 
     fn: async function ({nome, email, login, senha, endereco}) {
+        let hasLogin = await Cliente.findOne({
+          login: login
+        })
 
+        let hasEmail = await Cliente.findOne({
+          email: email
+        })
+
+        if(hasEmail || hasLogin) {
+          throw 'emailAlreadyInUse'
+        }
+
+        if(this.req.session.userId && this.req.session.isAdmin){
+          let lastAdministrador = await Administrador.find()
+            .sort('id DESC')
+            .limit(1)
+
+          let newId = lastAdministrador[0] ? parseInt(lastAdministrador[0].id) + 1 : 1
+          await Administrador.create({
+                  id: newId,
+                  nome: nome,
+                  email: email,
+                  login: login,
+                  senha: senha,
+              }
+          ).fetch();
+
+        } else {
         let lastCliente = await Cliente.find()
             .sort('id DESC')
             .limit(1)
@@ -87,7 +114,8 @@ the account verification message.)`,
         ).fetch();
 
         this.req.session.userId = newUserRecord.id;
-
+        this.req.session.login = newUserRecord.login;
+       }
         if (sails.hooks.sockets) {
             await sails.helpers.broadcastSessionChange(this.req);
         }

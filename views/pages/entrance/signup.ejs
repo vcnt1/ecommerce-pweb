@@ -1,33 +1,34 @@
 <div id="signup" v-cloak>
   <div class="container-fluid pt-5 pb-5" v-if="!cloudSuccess">
-    <h1 class="text-center">Crie a sua conta aqui</h1>
+    <h1 class="text-center">Crie a sua conta aqui{{this.req}}</h1>
     <div style="max-width: 450px;" class="mx-auto" >
       <p class="text-center">Vamos começar! Tornar-se um membro é gratuito e leva apenas alguns minutos.</p>
       <hr/>
       <ajax-form action="signup" :syncing.sync="syncing" :cloud-error.sync="cloudError" :form-errors.sync="formErrors" :form-data="formData" :form-rules="formRules" @submitted="submittedForm()">
         <div class="form-group">
-          <label for="full-name">Nome completo</label>
-          <input class="form-control" id="full-name" type="text"  :class="[formErrors.fullName ? 'is-invalid' : '']" v-model.trim="formData.fullName" placeholder="Sturgis P. Sturgeon" autocomplete="name" focus-first>
-          <div class="invalid-feedback" v-if="formErrors.fullName">Por favor digite seu nome completo.</div>
+          <label for="nome">Nome completo</label>
+          <input class="form-control" id="nome" type="text"  :class="[formErrors.nome ? 'is-invalid' : '']" v-model.trim="formData.nome" placeholder="Sturgis P. Sturgeon" autocomplete="name" focus-first>
+          <div class="invalid-feedback" v-if="formErrors.nome">Por favor digite seu nome completo.</div>
         </div>
         <div class="form-group">
-          <label for="email-address">Endereço de e-mail</label>
-          <input class="form-control" id="email-address" type="email"  :class="[formErrors.emailAddress ? 'is-invalid' : '']" v-model.trim="formData.emailAddress" placeholder="sturgeon@example.com" autocomplete="email">
-          <div class="invalid-feedback" v-if="formErrors.emailAddress">Por favor insira um endereço de e-mail válido.</div>
+          <label for="loginn">Login</label>
+          <input class="form-control" id="loginn" type="text"  :class="[formErrors.login ? 'is-invalid' : '']" v-model.trim="formData.login" placeholder="Sturgis P. Sturgeon" autocomplete="name">
+          <div class="invalid-feedback" v-if="formErrors.login">Por favor digite seu Login</div>
         </div>
         <div class="form-group">
-          <label for="password">Escolha uma senha</label>
-          <input class="form-control" id="password" type="password"  :class="[formErrors.password ? 'is-invalid' : '']" v-model.trim="formData.password" placeholder="••••••••" autocomplete="new-password">
-          <div class="invalid-feedback" v-if="formErrors.password">Por favor insira uma senha.</div>
+          <label for="email">Endereço de e-mail</label>
+          <input class="form-control" id="email" type="email"  :class="[formErrors.email ? 'is-invalid' : '']" v-model.trim="formData.email" placeholder="sturgeon@example.com" autocomplete="email">
+          <div class="invalid-feedback" v-if="formErrors.email">Por favor insira um endereço de e-mail válido.</div>
         </div>
         <div class="form-group">
-          <label for="confirm-password">Confirme a Senha</label>
-          <input class="form-control" id="confirm-password" type="password"  :class="[formErrors.confirmPassword ? 'is-invalid' : '']" v-model.trim="formData.confirmPassword" placeholder="••••••••" autocomplete="new-password">
-          <div class="invalid-feedback" v-if="formErrors.confirmPassword">Sua senha e confirmação não coincidem.</div>
+          <label for="senha">Senha</label>
+          <input class="form-control" id="senha" type="password"  :class="[formErrors.senha ? 'is-invalid' : '']" v-model.trim="formData.senha" placeholder="••••••••" autocomplete="new-password">
+          <div class="invalid-feedback" v-if="formErrors.senha">Por favor insira uma senha.</div>
         </div>
-        <div class="form-group form-check">
-          <input class="form-check-input" id="terms-agreement" type="checkbox" v-model="formData.agreed">
-          <label for="terms-agreement" class="form-check-label" :class="[formErrors.agreed ? 'text-danger' : '']">Eu li e concordo com os <a target="_blank" href="/terms">termos de serviço </a>.</label>
+        <div class="form-group">
+          <label for="endereco">Endereço</label>
+          <input class="form-control" id="endereco" type="text"  :class="[formErrors.endereco ? 'is-invalid' : '']" v-model.trim="formData.endereco" placeholder="Sturgis P. Sturgeon" autocomplete="name">
+          <div class="invalid-feedback" v-if="formErrors.endereco">Por favor digite seu Endereço</div>
         </div>
         <cloud-error v-if="cloudError==='emailAlreadyInUse'">Parece que já existe usuário cadastrado com esse e-mail. Se esqueceu sua senha, você pode recuperar <a href="password/forgot">aqui</a>.</cloud-error>
         <cloud-error v-else-if="cloudError"></cloud-error>

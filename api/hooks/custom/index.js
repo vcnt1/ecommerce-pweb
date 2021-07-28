@@ -159,14 +159,24 @@ will be disabled and/or hidden in the UI.
             if (!req.session.userId) { return next(); }
 
             // Otherwise, look up the logged-in user.
-            var loggedInUser = await User.findOne({
-              id: req.session.userId
+            var loggedInAdministrador = await Administrador.findOne({
+              id: req.session.userId,
+              login: req.session.login
             });
 
+            var loggedInCliente = await Cliente.findOne({
+              id: req.session.userId
+            });
+            if(loggedInAdministrador){
+              req.session.isAdmin = true
+            } else {
+              req.session.isAdmin = false
+            }
+            var loggedInUser = !!loggedInAdministrador?loggedInAdministrador:loggedInCliente
             // If the logged-in user has gone missing, log a warning,
             // wipe the user id from the requesting user agent's session,
             // and then send the "unauthorized" response.
-            if (!loggedInUser) {
+            if (!loggedInCliente) {
               sails.log.warn('Somehow, the user record for the logged-in user (`'+req.session.userId+'`) has gone missing....');
               delete req.session.userId;
               return res.unauthorized();

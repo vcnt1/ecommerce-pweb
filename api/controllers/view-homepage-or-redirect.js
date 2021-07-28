@@ -20,13 +20,25 @@ module.exports = {
 
         redirect: {
             responseType: 'redirect',
-            description: 'Requesting user is logged in, so redirect to the internal welcome page.'
+            description: 'Requesting user is logged in, so redirect to the internal welcome page.',
+            viewTemplatePath: 'pages/dashboard/view-welcome',
         },
+
+        admin: {
+            description: 'Requesting user is logged in and administrator, so redirect to admin signup.',
+            viewTemplatePath: 'pages/entrance/signup',
+      },
 
     },
 
 
     fn: async function () {
-
+        if(this.req.session.userId){
+          if(this.req.session.isAdmin){
+            throw "admin"
+          }else{ 
+            throw "redirect"
+          }
+        }
     }
 };

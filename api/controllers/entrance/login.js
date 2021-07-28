@@ -4,12 +4,12 @@ module.exports = {
     friendlyName: 'Login',
 
 
-    description: 'Log in using the provided email and password combination.',
+    description: 'Log in using the provided login and password combination.',
 
 
     extendedDescription:
         `This action attempts to look up the user record in the database with the
-specified email address.  Then, if such a user exists, it uses
+specified login address.  Then, if such a user exists, it uses
 bcrypt to compare the hashed password from the database with the provided
 password attempt.`,
 
@@ -44,7 +44,7 @@ and exposed as \`req.me\`.)`
         },
 
         badCombo: {
-            description: `The provided email and password combination does not
+            description: `The provided login and password combination does not
       match any user in the database.`,
             responseType: 'unauthorized'
             // ^This uses the custom `unauthorized` response located in `api/responses/unauthorized.js`.
@@ -60,11 +60,17 @@ and exposed as \`req.me\`.)`
 
 
     fn: async function ({login, senha}) {
-
-        let userRecord = await Cliente.findOne({
+        let clienteRecord = await Cliente.findOne({
             login: login,
             senha: senha,
         });
+
+        let administradorRecord = await Administrador.findOne({
+          login: login,
+          senha: senha,
+        });
+
+        let userRecord = !!clienteRecord? clienteRecord : administradorRecord
 
         if (!userRecord) {
             throw 'badCombo';
@@ -81,6 +87,7 @@ and exposed as \`req.me\`.)`
         }
 
         this.req.session.userId = userRecord.id;
+        this.req.session.login = userRecord.login;
 
         if (sails.hooks.sockets) {
             await sails.helpers.broadcastSessionChange(this.req);
