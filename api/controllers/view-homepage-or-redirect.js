@@ -19,9 +19,8 @@ module.exports = {
         },
 
         redirect: {
-            responseType: 'redirect',
             description: 'Requesting user is logged in, so redirect to the internal welcome page.',
-            viewTemplatePath: 'pages/dashboard/view-welcome',
+            viewTemplatePath: 'pages/dashboard/welcome',
         },
 
         admin: {
