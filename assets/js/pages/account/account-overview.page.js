@@ -49,6 +49,16 @@ parasails.registerPage('account-overview', {
   //  ╩╝╚╝ ╩ ╚═╝╩╚═╩ ╩╚═╝ ╩ ╩╚═╝╝╚╝╚═╝
   methods: {
 
+    handleRemoveAccount : function(){
+      if (confirm('Sua conta foi excluida com sucesso!')){
+        // Clear the `userId` property from this session.
+        delete this.req.session.userId;
+        delete this.req.session.login;
+        delete this.req.session.isAdmin;
+        window.location.href= "/"
+      }
+    },
+
     clickUpdateBillingCardButton: function() {
       this.modal = 'update-billing-card';
       this.formData = { newPaymentSource: undefined };

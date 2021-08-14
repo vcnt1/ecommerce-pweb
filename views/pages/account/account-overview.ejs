@@ -24,6 +24,10 @@
         <span v-if="me.emailStatus === 'unconfirmed' || me.emailStatus === 'change-requested'" class="badge badge-pill badge-warning">não verificado</span>
       </div>
     </div>
+    <div class="row">
+      <div class="col-3">Endereço:</div>
+      <div class="col"><strong>{{me.endereco}}</strong></div>
+    </div>
     <hr/>
     <div class="row mb-3">
       <div class="col-sm-6">
@@ -40,6 +44,13 @@
       <div class="col"><strong>••••••••••</strong></div>
     </div>
     <hr/>
+    <div class="row">
+      <div class="col-sm-12">
+        <span class="float-sm-right">
+          <a style="width: 150px" class="btn btn-sm btn-outline-danger"  @click="handleRemoveAccount">Excluir conta</a>
+        </span>
+      </div>
+    </div>
      <div class="row mb-3" v-if="isBillingEnabled">
       <div class="col-sm-6">
         <h4>Cobrança</h4>
