@@ -5,6 +5,7 @@
  */
 
 module.exports = {
+    tableName: 'produtos',
     attributes: {
         id: {
             type: 'number',

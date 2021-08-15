@@ -16,12 +16,14 @@ module.exports = {
 
   },
 
-
   fn: async function () {
-
-    return {};
-
+    if (this.req.session.userId) {
+      if (this.req.session.isAdmin) {
+        let categorias = await Categoria.find()
+        return {
+          categorias: categorias
+        };
+      }
+    }
   }
-
-
 };

@@ -37,6 +37,9 @@ module.exports.routes = {
   '/logout':                  '/api/v1/account/logout',
   '/exclude':                  '/api/v1/account/exclude',
 
+  'GET /create-categoria':            { action: 'dashboard/create-categoria' },
+  'POST /create-produto':            { action: 'dashboard/create-produto' },
+
   '/api/v1/account/logout':                           { action: 'account/logout' },
   'PUT   /api/v1/account/update-password':            { action: 'account/update-password' },
   'PUT   /api/v1/account/update-profile':             { action: 'account/update-profile' },
