@@ -17,6 +17,10 @@ module.exports = {
       type: 'string'
     },
 
+    endereco: {
+      type: 'string'
+    },
+
   },
 
 
@@ -30,7 +34,7 @@ module.exports = {
   },
 
 
-  fn: async function ({nome, email}) {
+  fn: async function ({nome, email, endereco}) {
 
     // Determine if this request wants to change the current user's email address,
     // revert her pending email address change, modify her pending email address
@@ -66,7 +70,7 @@ module.exports = {
     // Start building the values to set in the db.
     // (We always set the fullName if provided.)
     var valuesToSet = {
-      nome, email
+      nome, email, endereco
     };
 
     // Save to the db

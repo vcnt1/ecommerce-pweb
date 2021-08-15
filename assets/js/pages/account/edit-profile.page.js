@@ -17,6 +17,7 @@ parasails.registerPage('edit-profile', {
     formRules: {
       nome: {required: true},
       email: {required: true, isEmail: true},
+      endereco: {required: true},
     },
 
     // Server error state for the form
@@ -30,6 +31,7 @@ parasails.registerPage('edit-profile', {
     // Set the form data.
     this.formData.nome = this.me.nome;
     this.formData.email = this.me.email;
+    this.formData.endereco = this.me.endereco;
   },
   mounted: async function() {
     //…

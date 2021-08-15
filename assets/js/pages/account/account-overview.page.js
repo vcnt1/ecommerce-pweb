@@ -50,7 +50,7 @@ parasails.registerPage('account-overview', {
   methods: {
 
     handleRemoveAccount : function(){
-      if (confirm('Sua conta foi excluida com sucesso!')){
+      if (confirm('Deseja mesmo excluir sua conta?')){
         // Clear the `userId` property from this session.
         delete this.req.session.userId;
         delete this.req.session.login;
