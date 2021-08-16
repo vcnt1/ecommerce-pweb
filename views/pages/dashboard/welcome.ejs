@@ -42,23 +42,29 @@
                         <div class="form-group">
                             <label for="quantidade">Quantidade</label>
                             <input class="form-control" id="quantidade" v-model="formDataProd.quantidade" type="text">
-                            <div class="invalid-feedback" v-if="formErrorsProd.quantidade">Por favor um quantidade válida</div>
+                            <div class="invalid-feedback" v-if="formErrorsProd.quantidade">Por favor um quantidade
+                                válida
+                            </div>
                         </div>
                         <input class="form-control" id="fotoBase64" v-model="formDataProd.fotoBase64" type="hidden">
                         <div class="form-group">
                             <label for="foto">Foto</label>
-                            <input class="form-control" id="foto" name="foto" type="file" accept="image/png, image/jpeg" onchange="onFotoInput()" required>
+                            <input class="form-control" id="foto" name="foto" type="file" accept="image/png, image/jpeg"
+                                   onchange="onFotoInput()" required>
                         </div>
                         <div class="form-group">
                             <label for="categorias">Categorias</label>
-                            <select id="categorias" class="custom-select" name="categorias" v-model="formDataProd.categorias" multiple>
+                            <select id="categorias" class="custom-select" name="categorias"
+                                    v-model="formDataProd.categorias" multiple>
                                 <% categorias.forEach(function(categoria)  { %>
                                     <option value="<%= categoria.id %>"><%= categoria.descricao %></option>
                                 <% }) %>
                             </select>
                         </div>
                         <div class="form-group">
-                            <ajax-button type="submit" :syncing="syncingProd" class="btn-dark btn-lg btn-block">Adicionar</ajax-button>
+                            <ajax-button type="submit" :syncing="syncingProd" class="btn-dark btn-lg btn-block">
+                                Adicionar
+                            </ajax-button>
                         </div>
                     </ajax-form>
                 </div>
@@ -89,6 +95,53 @@
                 </div>
             </div>
         </div>
+        <div class="container pt-5">
+            <h3>Produtos</h3>
+            <p>Gerencie os produtos aqui.</p>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Descrição</th>
+                    <th scope="col">Preço</th>
+                    <th scope="col">Quantidade</th>
+                    <th scope="col">Categorias</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% produtos.forEach(function(produto)  { %>
+                    <tr>
+                        <th scope="row"><%= produto.id %></th>
+                        <td><%= produto.descricao %></td>
+                        <td><%= produto.preco %></td>
+                        <td><%= produto.quantidade %></td>
+                        <td><%= produto.id %></td>
+                    </tr>
+                <% }) %>
+                </tbody>
+            </table>
+        </div>
+        <div class="container pt-5">
+            <h3>Categorias</h3>
+            <p>Gerencie as categorias aqui.</p>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Descrição</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% categorias.forEach(function(categoria)  { %>
+                    <tr>
+                        <th scope="row"><%= categoria.id %></th>
+                        <td><%= categoria.descricao %></td>
+                    </tr>
+                <% }) %>
+                </tbody>
+            </table>
+        </div>
+
     <% } %>
     <router-view></router-view>
 </div>

@@ -59,7 +59,7 @@ module.exports = {
             .limit(1)
 
         let newId = lastProduto[0] ? parseInt(lastProduto[0].id) + 1 : 1
-        let newProduto = await sails.helpers.produtoDao.create({
+        await Produto.createDao({
                 id: newId,
                 descricao: descricaoProd,
                 preco: parseFloat(preco),
@@ -67,9 +67,7 @@ module.exports = {
                 foto: fotoBase64,
                 categorias: categorias,
             }
-        ).fetch();
-
-        console.log(newProduto)
+        );
 
     }
 

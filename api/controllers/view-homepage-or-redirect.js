@@ -21,9 +21,10 @@ module.exports = {
         if (this.req.session.userId) {
             if (this.req.session.isAdmin) {
                 let categorias = await Categoria.find()
-                console.log(categorias)
+                let produtos = await Produto.find()
                 return {
-                    categorias: categorias
+                    categorias: categorias,
+                    produtos: produtos,
                 };
             }
         }
