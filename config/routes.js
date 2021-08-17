@@ -38,7 +38,11 @@ module.exports.routes = {
   '/exclude':                  '/api/v1/account/exclude',
 
   'GET /create-categoria':            { action: 'dashboard/create-categoria' },
+  'GET /edit-categoria':            { action: 'dashboard/edit-categoria' },
+  'GET /delete-categoria':            { action: 'dashboard/delete-categoria' },
   'POST /create-produto':            { action: 'dashboard/create-produto' },
+  'POST /edit-produto':            { action: 'dashboard/edit-produto' },
+  'GET /delete-produto':            { action: 'dashboard/delete-produto' },
 
   '/api/v1/account/logout':                           { action: 'account/logout' },
   'PUT   /api/v1/account/update-password':            { action: 'account/update-password' },

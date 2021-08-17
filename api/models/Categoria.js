@@ -17,5 +17,9 @@ module.exports = {
             type: 'string',
             columnName: 'descricao'
         },
-    }
+    },
+    async deleteDao(id) {
+        await sails.getDatastore().sendNativeQuery('DELETE FROM categorias_produtos WHERE categoria_id = $1;', [id])
+        await Categoria.destroyOne({id: id})
+    },
 };

@@ -1,31 +1,38 @@
 module.exports = {
 
 
-  friendlyName: 'View welcome page',
+    friendlyName: 'View welcome page',
 
 
-  description: 'Display the dashboard "Welcome" page.',
+    description: 'Display the dashboard "Welcome" page.',
 
 
-  exits: {
+    exits: {
 
-    success: {
-      viewTemplatePath: 'pages/dashboard/welcome',
-      description: 'Display the welcome page for authenticated users.'
+        success: {
+            viewTemplatePath: 'pages/dashboard/welcome',
+            description: 'Display the welcome page for authenticated users.'
+        },
+
     },
 
-  },
+    fn: async function () {
+        if (this.req.session.userId) {
+            if (this.req.session.isAdmin) {
+                let produtosFormatted = []
+                let categorias = await Categoria.find()
+                let produtos = await Produto.find()
 
-  fn: async function () {
-    if (this.req.session.userId) {
-      if (this.req.session.isAdmin) {
-        let categorias = await Categoria.find()
-        let produtos = await Produto.find()
-        return {
-          categorias: categorias,
-          produtos: produtos,
-        };
-      }
+                for (let p of produtos) {
+                    p.categorias = await Produto.getCategorias(p.id)
+                    produtosFormatted.push(p)
+                }
+
+                return {
+                    categorias: categorias,
+                    produtos: produtosFormatted,
+                };
+            }
+        }
     }
-  }
 };

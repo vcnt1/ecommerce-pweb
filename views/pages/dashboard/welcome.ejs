@@ -106,6 +106,8 @@
                     <th scope="col">Preço</th>
                     <th scope="col">Quantidade</th>
                     <th scope="col">Categorias</th>
+                    <th scope="col">Editar</th>
+                    <th scope="col">Deletar</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -115,7 +117,21 @@
                         <td><%= produto.descricao %></td>
                         <td><%= produto.preco %></td>
                         <td><%= produto.quantidade %></td>
-                        <td><%= produto.id %></td>
+                        <td><%= produto.categorias %></td>
+                        <td width="10%">
+                            <button type="button" onclick="openModal('produto_<%= produto.id %>')"
+                                    class="btn-dark btn-lg btn-block"><i
+                                        class="fa fa-edit"></i>
+                            </button>
+                        </td>
+                        <td width="10%">
+                            <form action="delete-produto">
+                                <input type="hidden" name="produto_id" value="<%= produto.id %>">
+                                <button type="submit" :syncing="syncing" class="btn-danger btn-lg btn-block"><i
+                                            class="fa fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
                     </tr>
                 <% }) %>
                 </tbody>
@@ -129,6 +145,8 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Descrição</th>
+                    <th scope="col">Editar</th>
+                    <th scope="col">Deletar</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -136,6 +154,20 @@
                     <tr>
                         <th scope="row"><%= categoria.id %></th>
                         <td><%= categoria.descricao %></td>
+                        <td width="10%">
+                            <button type="button" onclick="openModal('categoria_<%= categoria.id %>')"
+                                    class="btn-dark btn-lg btn-block"><i
+                                        class="fa fa-edit"></i>
+                            </button>
+                        </td>
+                        <td width="10%">
+                            <form action="delete-categoria">
+                                <input type="hidden" name="categoria_id" value="<%= categoria.id %>">
+                                <button type="submit" :syncing="syncing" class="btn-danger btn-lg btn-block"><i
+                                            class="fa fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
                     </tr>
                 <% }) %>
                 </tbody>
@@ -144,6 +176,92 @@
 
     <% } %>
     <router-view></router-view>
+    <% produtos.forEach(function(produto)  { %>
+        <div id="modal_edit_produto_<%= produto.id %>" class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Editar produto</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="edit-produto" method="post">
+                        <input value="<%= produto.id %>" name="produto_id" type="hidden">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Descrição</label>
+                                <input class="form-control" name="descricao" type="text"
+                                       value="<%= produto.descricao %>">
+                            </div>
+                            <div class="form-group">
+                                <label>Preço</label>
+                                <input class="form-control" name="preco" type="text" value="<%= produto.preco %>">
+                            </div>
+                            <div class="form-group">
+                                <label>Quantidade</label>
+                                <input class="form-control" name="quantidade" type="text"
+                                       value="<%= produto.quantidade %>">
+                            </div>
+                            <input class="form-control" id="fotoBase64_<%= produto.id %>" name="fotoBase64"
+                                   type="hidden">
+                            <div class="form-group">
+                                <label>Foto</label>
+                                <input class="form-control" id="_<%= produto.id %>" name="foto" type="file"
+                                       accept="image/png, image/jpeg"
+                                       onchange="onFotoInputEdit(this)" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="categorias">Categorias</label>
+                                <select class="custom-select" name="categorias[]" multiple>
+                                    <% categorias.forEach(function(categoria)  { %>
+                                        <% if(produto.categorias.includes(categoria.descricao)){ %>
+                                            <option selected value="<%= categoria.id %>"><%= categoria.descricao %></option>
+                                        <% } else { %>
+                                            <option value="<%= categoria.id %>"><%= categoria.descricao %></option>
+                                        <% } %>
+                                    <% }) %>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                            <button type="submit" class="btn btn-primary">Atualizar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    <% }) %>
+
+    <% categorias.forEach(function(categoria)  { %>
+        <div id="modal_edit_categoria_<%= categoria.id %>" class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Editar categoria</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="edit-categoria" method="post">
+                        <input value="<%= categoria.id %>" name="categoria_id" type="hidden">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Descrição</label>
+                                <input class="form-control" name="descricao" type="text"
+                                       value="<%= categoria.descricao %>">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                            <button type="submit" class="btn btn-primary">Atualizar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    <% }) %>
 </div>
 
 <script>
@@ -154,17 +272,29 @@
         reader.onerror = error => reject(error);
     });
 
+    function openModal(id) {
+        $('#modal_edit_' + id).modal('show')
+    }
+
+    async function onFotoInputEdit(input) {
+        hold(input.id, 'fotoBase64' + input.id)
+    }
+
     async function onFotoInput() {
-        let v = await toBase64(document.querySelector('#foto').files[0])
-        document.getElementById("fotoBase64").value = v;
+        hold('foto', 'fotoBase64')
+    }
+
+    async function hold(fileInput, textHiddenInput) {
+        let v = await toBase64(document.querySelector('#' + fileInput).files[0])
+        document.getElementById(textHiddenInput).value = v;
 
         let event = new Event('input', {
             bubbles: true,
             cancelable: true,
         });
 
-        document.getElementById("fotoBase64").dispatchEvent(event);
-        console.log(document.getElementById("fotoBase64").value)
+        document.getElementById(textHiddenInput).dispatchEvent(event);
+        console.log(document.getElementById(textHiddenInput).value)
     }
 
 </script>
