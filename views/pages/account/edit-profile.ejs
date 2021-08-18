@@ -19,6 +19,13 @@
             <div class="invalid-feedback" v-if="formErrors.email">Por favor insira um e-mail válido.</div>
           </div>
         </div>
+        <div class="col-sm-12">
+          <div class="form-group">
+            <label for="endereco">Endereço</label>
+            <input class="form-control" id="endereco" name="endereco" type="text"  :class="[formErrors.endereco ? 'is-invalid' : '']" v-model.trim="formData.endereco" placeholder="Endereço" autocomplete="endereco">
+            <div class="invalid-feedback" v-if="formErrors.endereco">Por favor insira um endereço válido.</div>
+          </div>
+        </div>
       </div>
       <div class="row">
         <div class="col-sm-6">

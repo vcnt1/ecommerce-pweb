@@ -35,11 +35,13 @@ module.exports.routes = {
   'GET /account/profile':    { action: 'account/view-edit-profile' },
 
   '/logout':                  '/api/v1/account/logout',
+  '/exclude':                  '/api/v1/account/exclude',
 
   '/api/v1/account/logout':                           { action: 'account/logout' },
   'PUT   /api/v1/account/update-password':            { action: 'account/update-password' },
   'PUT   /api/v1/account/update-profile':             { action: 'account/update-profile' },
   'PUT   /api/v1/account/update-billing-card':        { action: 'account/update-billing-card' },
+  '/api/v1/account/exclude':                          { action: 'account/exclude' },
   'PUT   /api/v1/entrance/login':                        { action: 'entrance/login' },
   'POST  /api/v1/entrance/signup':                       { action: 'entrance/signup' },
   'POST  /api/v1/entrance/send-password-recovery-email': { action: 'entrance/send-password-recovery-email' },
