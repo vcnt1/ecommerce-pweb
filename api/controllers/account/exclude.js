@@ -1,5 +1,5 @@
 const ClienteDAO = require("../../daos/ClienteDAO");
-const AdministradorDAO = require("../../daos/ClienteDAO");
+const AdministradorDAO = require("../../daos/AdministradorDAO");
 module.exports = {
 
 

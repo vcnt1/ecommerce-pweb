@@ -177,26 +177,28 @@
                 </tr>
                 </thead>
                 <tbody>
-                <% categorias.forEach(function(categoria)  { %>
-                    <tr>
-                        <th scope="row"><%= categoria.id %></th>
-                        <td><%= categoria.descricao %></td>
-                        <td width="10%">
-                            <button type="button" onclick="openModal('categoria_<%= categoria.id %>')"
-                                    class="btn-dark btn-lg btn-block"><i
-                                        class="fa fa-edit"></i>
-                            </button>
-                        </td>
-                        <td width="10%">
-                            <form action="delete-categoria">
-                                <input type="hidden" name="categoria_id" value="<%= categoria.id %>">
-                                <button type="submit" :syncing="syncing" class="btn-danger btn-lg btn-block"><i
-                                            class="fa fa-trash"></i>
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                <% }) %>
+                <%  if(typeof categorias !== 'undefined') {
+                  categorias.forEach(function(categoria)  { %>
+                      <tr>
+                          <th scope="row"><%= categoria.id %></th>
+                          <td><%= categoria.descricao %></td>
+                          <td width="10%">
+                              <button type="button" onclick="openModal('categoria_<%= categoria.id %>')"
+                                      class="btn-dark btn-lg btn-block"><i
+                                          class="fa fa-edit"></i>
+                              </button>
+                          </td>
+                          <td width="10%">
+                              <form action="delete-categoria">
+                                  <input type="hidden" name="categoria_id" value="<%= categoria.id %>">
+                                  <button type="submit" :syncing="syncing" class="btn-danger btn-lg btn-block"><i
+                                              class="fa fa-trash"></i>
+                                  </button>
+                              </form>
+                          </td>
+                      </tr>
+                  <% }) 
+                }%>
                 </tbody>
             </table>
         </div>

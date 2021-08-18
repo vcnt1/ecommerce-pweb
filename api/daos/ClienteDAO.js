@@ -12,7 +12,7 @@ module.exports = {
     async update(id, params) {
         let query = 'UPDATE clientes SET'
         let attributes = []
-
+        
         if(params.nome) {
             attributes.push(`nome = '${params.nome}'`)
         }
@@ -26,7 +26,7 @@ module.exports = {
         }
 
         if(params.senha) {
-            attributes.push(`login = '${params.senha}'`)
+            attributes.push(`senha = '${params.senha}'`)
         }
 
         if(params.endereco) {

@@ -1,3 +1,5 @@
+const ClienteDAO = require("../../daos/ClienteDAO");
+
 module.exports = {
 
 
@@ -19,16 +21,8 @@ module.exports = {
 
 
   fn: async function ({password}) {
-
-    // Hash the new password.
-    var hashed = await sails.helpers.passwords.hashPassword(password);
-
     // Update the record for the logged-in user.
-    await User.updateOne({ id: this.req.me.id })
-    .set({
-      password: hashed
-    });
-
+    await ClienteDAO.update(this.req.session.userId, { senha: password })
   }
 
 
