@@ -13,7 +13,7 @@
     <account-notification-banner></account-notification-banner>
     <% if(!req.session.isAdmin) { %>
         <div class="container pt-5 pb-5" v-cloak>
-            <h1>Bem-vindo, {{me.nome?me.nome:''}}!</h1>
+            <h1>Bem-vindo, {{me ? me.nome:''}}!</h1>
             <hr/>
             <p>Essa é uma página que só <strong>clientes</strong> tem acesso!</p>
             <!-- <div class="buttons">
@@ -23,14 +23,14 @@
     <% } else { %>
         <div class="container pt-5 pb-5" v-cloak>
             <div class="d-flex justify-content-between">
-                <h1>Bem-vindo, {{me.nome?me.nome:''}}!</h1>
+                <h1>Bem-vindo, {{me ?me.nome:''}}!</h1>
                 <div class="w-25 d-flex" style="height: 50px">
                     <button type="button" onclick="openModal('admin')"
                             class="btn-dark btn-lg btn-block w-50"><i
                                 class="fa fa-edit"></i>
                     </button>
                     <form class="w-50 ml-2" style="height: 50px" action="delete-admin">
-                        <input type="hidden" name="admin_id" value="<%= me.id %>">
+                        <input type="hidden" name="admin_id" value="<%= me? me.id: '' %>">
                         <button type="submit" class="btn-danger btn-lg btn-block"><i class="fa fa-trash"></i>
                         </button>
                     </form>
@@ -80,9 +80,11 @@
                             <label for="categorias">Categorias</label>
                             <select id="categorias" class="custom-select" name="categorias"
                                     v-model="formDataProd.categorias" multiple required>
-                                <% categorias.forEach(function(categoria)  { %>
-                                    <option value="<%= categoria.id %>"><%= categoria.descricao %></option>
-                                <% }) %>
+                                <% if (typeof categorias !== 'undefined') { %>
+                                  <% categorias.forEach(function(categoria)  { %>
+                                      <option value="<%= categoria.id %>"><%= categoria.descricao %></option>
+                                  <% }) %>
+                                <% } %>
                             </select>
                         </div>
                         <div class="form-group">
@@ -135,28 +137,30 @@
                 </tr>
                 </thead>
                 <tbody>
-                <% produtos.forEach(function(produto)  { %>
-                    <tr>
-                        <th scope="row"><%= produto.id %></th>
-                        <td><%= produto.descricao %></td>
-                        <td><%= produto.preco %></td>
-                        <td><%= produto.quantidade %></td>
-                        <td><%= produto.categorias %></td>
-                        <td width="10%">
-                            <button type="button" onclick="openModal('produto_<%= produto.id %>')"
-                                    class="btn-dark btn-lg btn-block"><i
-                                        class="fa fa-edit"></i>
-                            </button>
-                        </td>
-                        <td width="10%">
-                            <form action="delete-produto">
-                                <input type="hidden" name="produto_id" value="<%= produto.id %>">
-                                <button type="submit" class="btn-danger btn-lg btn-block"><i class="fa fa-trash"></i>
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                <% }) %>
+                <% if(typeof produtos !== 'undefined') { 
+                    produtos.forEach(function(produto)  { %>
+                      <tr>
+                          <th scope="row"><%= produto.id %></th>
+                          <td><%= produto.descricao %></td>
+                          <td><%= produto.preco %></td>
+                          <td><%= produto.quantidade %></td>
+                          <td><%= produto.categorias %></td>
+                          <td width="10%">
+                              <button type="button" onclick="openModal('produto_<%= produto.id %>')"
+                                      class="btn-dark btn-lg btn-block"><i
+                                          class="fa fa-edit"></i>
+                              </button>
+                          </td>
+                          <td width="10%">
+                              <form action="delete-produto">
+                                  <input type="hidden" name="produto_id" value="<%= produto.id %>">
+                                  <button type="submit" class="btn-danger btn-lg btn-block"><i class="fa fa-trash"></i>
+                                  </button>
+                              </form>
+                          </td>
+                      </tr>
+                  <% })
+                   } %>
                 </tbody>
             </table>
         </div>
@@ -239,6 +243,7 @@
                               <div class="form-group">
                                   <label for="categorias">Categorias</label>
                                   <select class="custom-select" name="categorias" multiple>
+                                    <% if(!!categorias && !!produto && produto.categorias ) { %>
                                       <% categorias.forEach(function(categoria)  { %>
                                           <% if(produto.categorias.includes(categoria.descricao)){ %>
                                               <option selected
@@ -247,6 +252,7 @@
                                               <option value="<%= categoria.id %>"><%= categoria.descricao %></option>
                                           <% } %>
                                       <% }) %>
+                                    <% } %>
                                   </select>
                               </div>
                           </div>

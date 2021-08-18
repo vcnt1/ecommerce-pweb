@@ -11,13 +11,26 @@ module.exports = {
         success: {
             statusCode: 200,
             description: 'Requesting user is a guest, so show the public landing page.',
-            viewTemplatePath: 'pages/dashboard/welcome'
+            viewTemplatePath: 'pages/homepage'
         },
+        redirect: {
+          description: 'Não se tem acesso a homepage caso esteja desligado',       
+          responseType: 'redirect'     
+      }
 
     },
 
 
     fn: async function () {
-        this.res.redirect('/welcome');
+      if (this.req.session.userId && !this.req.session.isAdmin) {
+        let categorias = await Produto.getByCategorias()
+        let produtos = await Produto.find()
+        return {
+            categorias: categorias,
+            produtos: produtos,
+        };
+      } else {
+        throw {redirect: '/welcome'}
+      }
     }
 };

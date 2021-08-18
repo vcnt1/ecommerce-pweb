@@ -14,14 +14,21 @@
     <div class="container pt-1 pb-5" purpose="about-section">
       <h3>Aqui você encontra frutas fresquinhas!</h3>
       <div class="row pt-5">
-        <div class="mb-4 mb-sm-0 col-sm">
-          <div style="font-size: 35px; line-height: 150px; height: 160px; width: 150px;" class="rounded-circle mx-auto text-center mb-3 d-flex justify-content-center">
-            <img src="images/frutas/maca.png" style="max-width: 150px; height: auto;"/>
+        
+      <% if(typeof produtos !== 'undefined' && typeof categorias !== 'undefined') { %>
+        
+        <% produtos.map(produto => {  %>
+          <div class="mb-4 mb-sm-0 col-sm">
+            <div style="font-size: 35px; line-height: 150px; height: 160px; width: 150px;" class="rounded-circle mx-auto text-center mb-3 d-flex justify-content-center">
+              <img src="<%= produto.foto %>" style="max-width: 150px; height: auto;"/>
+            </div>
+            <h4><%= produto.descricao %></h4>
+            <h5 style='font-size: 15px; '><%= produto.preco.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}) %></h5>
+            <h5 style='font-size: 12px;' <% if(produto.quantidade <= 3) { %> class="text-danger" <% } else { %> class="text-primary" <% } %>>Em estoque: <%= produto.quantidade %></h5>
           </div>
-          <h4>Maçãs</h4>
-          <p class="text-muted">Variedades de frutas</p>
-        </div>
-        <div class="pt-4 pt-sm-0 mb-4 mb-sm-0 col-sm">
+        <% })
+        } %>
+        <!-- <div class="pt-4 pt-sm-0 mb-4 mb-sm-0 col-sm">
           <div style="font-size: 35px; line-height: 150px; height: 150px; width: 150px;" class="rounded-circle mx-auto d-flex text-center pb-5 m-auto d-flex justify-content-center">
             <div class="d-flex m-auto justify-content-between"><img src="images/frutas/banana.png" style="max-width: 150px; height: auto" /></div>
           </div>
@@ -34,7 +41,7 @@
           </div>
           <h4>Uvas</h4>
           <p class="text-muted">Variedades de frutas</p>
-        </div>
+        </div> -->
       </div>
       <a class="btn btn-outline-info mt-3" href="/cesta">Compre agora!</a>
     </div>
