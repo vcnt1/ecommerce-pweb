@@ -1,4 +1,5 @@
 const ClienteDAO = require("../../daos/ClienteDAO");
+const AdministradorDAO = require("../../daos/ClienteDAO");
 module.exports = {
 
 
@@ -8,9 +9,6 @@ module.exports = {
     description: 'Exclude logged-in user.',
 
     exits: { 
-        success: {
-            statusCode: 200
-        },
         notFound: {
             statusCode: 404,
             viewTemplatePath: 'pages/account/account-overview'
@@ -18,7 +16,7 @@ module.exports = {
         redirect: {
             description: 'Email address confirmed and requesting user logged in.  Since this looks like a browser, redirecting...',       
             responseType: 'redirect'     
-        },
+        }
     },
 
   
@@ -27,18 +25,24 @@ module.exports = {
             throw { redirect: '/' };       
         }
         if (this.req.session.userId) {
-            let user = ClienteDAO.selectById(this.req.session.userId)
-            console.log(this.req.session.userId)
-            if (user) {
-                console.log("olhaeuaqui")
-                ClienteDAO.delete(this.req.session.userId)
-                delete this.req.session.userId;     
-                delete this.req.session.login;     
-                delete this.req.session.isAdmin;
-                console.log("passouuuaffff")
-                throw 'success' 
+            if(this.req.session.isAdmin) {
+              let user = AdministradorDAO.selectById(this.req.session.userId)
+              if (user) {
+                  AdministradorDAO.delete(this.req.session.userId)
+                  
+                  throw {redirect: '/logout'}
+              } else {
+                  throw 'notFound'
+              }
+              
             } else {
-                throw 'notFound'
+              let user = ClienteDAO.selectById(this.req.session.userId)
+              if (user) {
+                  ClienteDAO.delete(this.req.session.userId)
+                  throw {redirect: '/logout'}
+              } else {
+                  throw 'notFound'
+              }
             }
         }
         throw 'notFound'
