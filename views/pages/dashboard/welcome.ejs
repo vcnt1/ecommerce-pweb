@@ -11,7 +11,20 @@
         </div>
     <% } else { %>
         <div class="container pt-5 pb-5" v-cloak>
-            <h1>Bem-vindo, {{me.nome?me.nome:''}}!</h1>
+            <div class="d-flex justify-content-between">
+                <h1>Bem-vindo, {{me.nome?me.nome:''}}!</h1>
+                <div class="w-25 d-flex" style="height: 50px">
+                    <button type="button" onclick="openModal('admin')"
+                            class="btn-dark btn-lg btn-block w-50"><i
+                                class="fa fa-edit"></i>
+                    </button>
+                    <form class="w-50 ml-2" style="height: 50px" action="delete-admin">
+                        <input type="hidden" name="admin_id" value="<%= me.id %>">
+                        <button type="submit" class="btn-danger btn-lg btn-block"><i class="fa fa-trash"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
             <hr/>
             <p>Essa é uma página que só <strong>administradores</strong> tem acesso!</p>
         </div>
@@ -55,7 +68,7 @@
                         <div class="form-group">
                             <label for="categorias">Categorias</label>
                             <select id="categorias" class="custom-select" name="categorias"
-                                    v-model="formDataProd.categorias" multiple>
+                                    v-model="formDataProd.categorias" multiple required>
                                 <% categorias.forEach(function(categoria)  { %>
                                     <option value="<%= categoria.id %>"><%= categoria.descricao %></option>
                                 <% }) %>
@@ -127,8 +140,7 @@
                         <td width="10%">
                             <form action="delete-produto">
                                 <input type="hidden" name="produto_id" value="<%= produto.id %>">
-                                <button type="submit" :syncing="syncing" class="btn-danger btn-lg btn-block"><i
-                                            class="fa fa-trash"></i>
+                                <button type="submit" class="btn-danger btn-lg btn-block"><i class="fa fa-trash"></i>
                                 </button>
                             </form>
                         </td>
@@ -187,6 +199,7 @@
                         </button>
                     </div>
                     <form action="edit-produto" method="post">
+                        <input type="hidden" name="_csrf" value="<%= _csrf %>"/>
                         <input value="<%= produto.id %>" name="produto_id" type="hidden">
                         <div class="modal-body">
                             <div class="form-group">
@@ -209,14 +222,15 @@
                                 <label>Foto</label>
                                 <input class="form-control" id="_<%= produto.id %>" name="foto" type="file"
                                        accept="image/png, image/jpeg"
-                                       onchange="onFotoInputEdit(this)" required>
+                                       onchange="onFotoInputEdit(this)">
                             </div>
                             <div class="form-group">
                                 <label for="categorias">Categorias</label>
-                                <select class="custom-select" name="categorias[]" multiple>
+                                <select class="custom-select" name="categorias" multiple>
                                     <% categorias.forEach(function(categoria)  { %>
                                         <% if(produto.categorias.includes(categoria.descricao)){ %>
-                                            <option selected value="<%= categoria.id %>"><%= categoria.descricao %></option>
+                                            <option selected
+                                                    value="<%= categoria.id %>"><%= categoria.descricao %></option>
                                         <% } else { %>
                                             <option value="<%= categoria.id %>"><%= categoria.descricao %></option>
                                         <% } %>
@@ -244,7 +258,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="edit-categoria" method="post">
+                    <form action="edit-categoria" method="get">
                         <input value="<%= categoria.id %>" name="categoria_id" type="hidden">
                         <div class="modal-body">
                             <div class="form-group">
@@ -262,6 +276,44 @@
             </div>
         </div>
     <% }) %>
+
+    <div id="modal_edit_admin" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar cadastro</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="edit-admin" method="get">
+                    <input value="<%= me.id %>" name="admin_id" type="hidden">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Nome</label>
+                            <input class="form-control" name="nome" type="text" value="<%= me.nome %>">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input class="form-control" name="email" type="text" value="<%= me.email %>">
+                        </div>
+                        <div class="form-group">
+                            <label>Login</label>
+                            <input class="form-control" name="login" type="text" value="<%= me.login %>">
+                        </div>
+                        <div class="form-group">
+                            <label>Senha</label>
+                            <input class="form-control" name="senha" type="text" value="<%= me.senha %>">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-primary">Atualizar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>

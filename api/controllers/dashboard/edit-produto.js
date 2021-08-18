@@ -8,14 +8,25 @@ module.exports = {
 
     inputs: {
 
-        categoria_id: {
+        produto_id: {
             required: true,
             type: 'string',
         },
         descricao: {
-            required: true,
             type: 'string',
         },
+        preco: {
+            type: 'string',
+        },
+        fotoBase64: {
+            type: 'string',
+        },
+        quantidade: {
+            type: 'string',
+        },
+        categorias: {
+            type: 'ref',
+        }
 
     },
     exits: {
@@ -25,21 +36,18 @@ module.exports = {
             description: 'Display the welcome page after creating the category'
         },
 
-        categoriaAlreadyExists: {
-            statusCode: 409,
-            description: 'The provided description already exists',
-        },
-
     },
 
 
-    fn: async function ({categoria_id, descricao}) {
-        await Categoria.updateOne({
-            id: parseInt(categoria_id)
-        }).set({
+    fn: async function({produto_id, descricao, fotoBase64, preco, quantidade, categorias}) {
+        await Produto.updateDao({
+                id: produto_id,
                 descricao: descricao,
-            }
-        )
+                preco: parseFloat(preco),
+                quantidade: parseInt(quantidade),
+                foto: fotoBase64,
+            }, categorias
+        );
 
         this.res.redirect('/welcome');
     }

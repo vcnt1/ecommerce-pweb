@@ -39,14 +39,29 @@ module.exports = {
         await sails.getDatastore().sendNativeQuery('INSERT INTO produtos(id, descricao, preco, foto, quantidade) VALUES($1, $2, $3, $4, $5);', [newId, params.descricao, params.preco, params.foto, params.quantidade])
         console.log(params.categorias)
 
-        params.categorias.forEach(async function (categoria){
+        params.categorias.forEach(async function (categoria) {
             await sails.getDatastore().sendNativeQuery('INSERT INTO categorias_produtos(produto_id, categoria_id) VALUES($1, $2);', [newId, parseInt(categoria)])
         })
+    },
+    async updateDao(params, categorias) {
+        let produtoId = parseInt(params.id)
+
+        await Produto.updateOne({
+            id: produtoId
+        }).set(params)
+
+        if (categorias) {
+            await sails.getDatastore().sendNativeQuery('DELETE FROM categorias_produtos WHERE produto_id = $1', [produtoId])
+
+            categorias.forEach(async function (categoria) {
+                await sails.getDatastore().sendNativeQuery('INSERT INTO categorias_produtos(produto_id, categoria_id) VALUES($1, $2);', [produtoId, parseInt(categoria)])
+            })
+        }
     },
     async getCategorias(id) {
         let categoriasQuery = await sails.getDatastore().sendNativeQuery('SELECT descricao FROM categorias_produtos cp INNER JOIN categorias cat ON cat.id = cp.categoria_id WHERE cp.produto_id = $1;', [id])
 
-        if(categoriasQuery.rowCount == 0) return 'Nenhuma'
+        if (categoriasQuery.rowCount == 0) return 'Nenhuma'
 
         let categorias = []
         categoriasQuery.rows.forEach(function (el) {

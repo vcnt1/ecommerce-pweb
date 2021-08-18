@@ -20,8 +20,8 @@ module.exports = {
         if (this.req.session.userId) {
             if (this.req.session.isAdmin) {
                 let produtosFormatted = []
-                let categorias = await Categoria.find()
-                let produtos = await Produto.find()
+                let categorias = await Categoria.find().sort('id ASC');
+                let produtos = await Produto.find().sort('id ASC');
 
                 for (let p of produtos) {
                     p.categorias = await Produto.getCategorias(p.id)

@@ -8,12 +8,20 @@ module.exports = {
 
     inputs: {
 
-        categoria_id: {
+        admin_id: {
             required: true,
             type: 'string',
         },
-        descricao: {
-            required: true,
+        nome: {
+            type: 'string',
+        },
+        login: {
+            type: 'string',
+        },
+        senha: {
+            type: 'string',
+        },
+        email: {
             type: 'string',
         },
 
@@ -33,11 +41,14 @@ module.exports = {
     },
 
 
-    fn: async function ({categoria_id, descricao}) {
-        await Categoria.updateOne({
-            id: parseInt(categoria_id)
+    fn: async function ({admin_id, nome, login, senha, email}) {
+        await Administrador.updateOne({
+            id: parseInt(admin_id)
         }).set({
-                descricao: descricao,
+                nome: nome,
+                login: login,
+                senha: senha,
+                email: email,
             }
         )
 
