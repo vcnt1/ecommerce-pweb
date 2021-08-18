@@ -29,16 +29,16 @@ module.exports.http = {
     *                                                                          *
     ***************************************************************************/
 
-    // order: [
-    //   'cookieParser',
-    //   'session',
-    //   'bodyParser',
-    //   'compress',
-    //   'poweredBy',
-    //   'router',
-    //   'www',
-    //   'favicon',
-    // ],
+    order: [
+      'cookieParser',
+      'session',
+      'bodyParser',
+      'compress',
+      'poweredBy',
+      'router',
+      'www',
+      'favicon',
+    ],
 
 
     /***************************************************************************
@@ -49,12 +49,14 @@ module.exports.http = {
     *                                                                          *
     ***************************************************************************/
 
-    // bodyParser: (function _configureBodyParser(){
-    //   var skipper = require('skipper');
-    //   var middlewareFn = skipper({ strict: true });
-    //   return middlewareFn;
-    // })(),
+    bodyParser: (function _configureBodyParser(){
+      var skipper = require('skipper');
+      var middlewareFn = skipper({ 
+        strict: true, 
+        extend: true,
+        limit: '10mb' });
+      return middlewareFn;
+    })(),
 
   },
-
 };

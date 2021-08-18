@@ -1,14 +1,373 @@
 <div id="welcome">
-  <account-notification-banner></account-notification-banner>
-  <div class="container pt-5 pb-5" v-cloak>
-    <h1>Bem-vindo, {{me.nome?me.nome:''}}!</h1>
-    <hr/>
-    <p>Essa é uma página que só <strong>clientes</strong> tem acesso!</p>
-    <!-- <div class="buttons">
-      <a class="btn btn-info" href="/account/profile">Atualizar e-mail</a>
-    </div> -->
-  </div>
+    <% 
+      if (typeof produtos === 'undefined') {
+        var produtos = undefined
+      }
+      if (typeof categorias === 'undefined') {
+        var categorias = undefined
+      }
+      if (typeof me === 'undefined') {
+        var me = undefined
+      }
+    %>
+    <account-notification-banner></account-notification-banner>
+    <% if(!req.session.isAdmin) { %>
+        <div class="container pt-5 pb-5" v-cloak>
+            <h1>Bem-vindo, {{me ? me.nome:''}}!</h1>
+            <hr/>
+            <p>Essa é uma página que só <strong>clientes</strong> tem acesso!</p>
+            <!-- <div class="buttons">
+              <a class="btn btn-info" href="/account/profile">Atualizar e-mail</a>
+            </div> -->
+        </div>
+    <% } else { %>
+        <div class="container pt-5 pb-5" v-cloak>
+            <div class="d-flex justify-content-between">
+                <h1>Bem-vindo, {{me ?me.nome:''}}!</h1>
+                <div class="w-25 d-flex" style="height: 50px">
+                    <button type="button" onclick="openModal('admin')"
+                            class="btn-dark btn-lg btn-block w-50"><i
+                                class="fa fa-edit"></i>
+                    </button>
+                    <form class="w-50 ml-2" style="height: 50px" action="delete-admin">
+                        <input type="hidden" name="admin_id" value="<%= me? me.id: '' %>">
+                        <button type="submit" class="btn-danger btn-lg btn-block"><i class="fa fa-trash"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <hr/>
+            <p>Essa é uma página que só <strong>administradores</strong> tem acesso!</p>
+        </div>
+        <div class="container d-flex">
+            <div class="w-50" v-if="!cloudSuccessProd">
+                <h3>Adicione um produto </h3>
+                <p>Todos produtos estarão disponíveis para compra!</p>
+                <div style="max-width: 450px;">
+                    <hr/>
+                    <ajax-form action="createProduto" :syncing.sync="syncingProd" :cloud-error.sync="cloudErrorProd"
+                               :form-errors.sync="formErrorsProd" :form-data="formDataProd" :form-rules="formRulesProd"
+                               @submitted="submittedFormProd()">
+                        <div class="form-group">
+                            <label for="descricaoProd">Descrição</label>
+                            <input class="form-control" id="descricaoProd" name="descricaoProd" type="text"
+                                   :class="[formErrorsProd.descricaoProd ? 'is-invalid' : '']"
+                                   v-model.trim="formDataProd.descricaoProd" placeholder="Nome do produto"
+                                   autocomplete="descricaoProd">
+                            <div class="invalid-feedback" v-if="formErrorsProd.descricaoProd">Por favor digite o nome do
+                                produto.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="preco">Preço</label>
+                            <input class="form-control" id="preco" v-model="formDataProd.preco" type="text">
+                            <div class="invalid-feedback" v-if="formErrorsProd.preco">Por favor um preço válido</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="quantidade">Quantidade</label>
+                            <input class="form-control" id="quantidade" v-model="formDataProd.quantidade" type="text">
+                            <div class="invalid-feedback" v-if="formErrorsProd.quantidade">Por favor um quantidade
+                                válida
+                            </div>
+                        </div>
+                        <input class="form-control" id="fotoBase64" v-model="formDataProd.fotoBase64" type="hidden">
+                        <div class="form-group">
+                            <label for="foto">Foto</label>
+                            <input class="form-control" id="foto" name="foto" type="file" accept="image/png, image/jpeg"
+                                   onchange="onFotoInput()" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="categorias">Categorias</label>
+                            <select id="categorias" class="custom-select" name="categorias"
+                                    v-model="formDataProd.categorias" multiple required>
+                                <% if (typeof categorias !== 'undefined') { %>
+                                  <% categorias.forEach(function(categoria)  { %>
+                                      <option value="<%= categoria.id %>"><%= categoria.descricao %></option>
+                                  <% }) %>
+                                <% } %>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <ajax-button type="submit" :syncing="syncingProd" class="btn-dark btn-lg btn-block">
+                                Adicionar
+                            </ajax-button>
+                        </div>
+                    </ajax-form>
+                </div>
+            </div>
+            <div class="w-50" v-if="!cloudSuccess">
+                <h3>Crie uma categoria </h3>
+                <p>Categorias podem ser vinculadas a produtos !</p>
+                <div style="max-width: 450px;">
+                    <hr/>
+                    <ajax-form action="createCategoria" :syncing.sync="syncing" :cloud-error.sync="cloudError"
+                               :form-errors.sync="formErrors" :form-data="formData" :form-rules="formRules"
+                               @submitted="submittedForm()">
+                        <div class="form-group">
+                            <label for="nome">Descrição</label>
+                            <input class="form-control" id="descricao" type="text"
+                                   :class="[formErrors.descricao ? 'is-invalid' : '']"
+                                   v-model.trim="formData.descricao" placeholder="Descrição da categoria"
+                                   autocomplete="descricao">
+                            <div class="invalid-feedback" v-if="formErrors.descricao">Por favor digite o nome da
+                                categoria.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <ajax-button type="submit" :syncing="syncing" class="btn-dark btn-lg btn-block">Criar
+                            </ajax-button>
+                        </div>
+                    </ajax-form>
+                </div>
+            </div>
+        </div>
+        <div class="container pt-5">
+            <h3>Produtos</h3>
+            <p>Gerencie os produtos aqui.</p>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Descrição</th>
+                    <th scope="col">Preço</th>
+                    <th scope="col">Quantidade</th>
+                    <th scope="col">Categorias</th>
+                    <th scope="col">Editar</th>
+                    <th scope="col">Deletar</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% if(typeof produtos !== 'undefined') { 
+                    produtos.forEach(function(produto)  { %>
+                      <tr>
+                          <th scope="row"><%= produto.id %></th>
+                          <td><%= produto.descricao %></td>
+                          <td><%= produto.preco %></td>
+                          <td><%= produto.quantidade %></td>
+                          <td><%= produto.categorias %></td>
+                          <td width="10%">
+                              <button type="button" onclick="openModal('produto_<%= produto.id %>')"
+                                      class="btn-dark btn-lg btn-block"><i
+                                          class="fa fa-edit"></i>
+                              </button>
+                          </td>
+                          <td width="10%">
+                              <form action="delete-produto">
+                                  <input type="hidden" name="produto_id" value="<%= produto.id %>">
+                                  <button type="submit" class="btn-danger btn-lg btn-block"><i class="fa fa-trash"></i>
+                                  </button>
+                              </form>
+                          </td>
+                      </tr>
+                  <% })
+                   } %>
+                </tbody>
+            </table>
+        </div>
+        <div class="container pt-5">
+            <h3>Categorias</h3>
+            <p>Gerencie as categorias aqui.</p>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Descrição</th>
+                    <th scope="col">Editar</th>
+                    <th scope="col">Deletar</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% categorias.forEach(function(categoria)  { %>
+                    <tr>
+                        <th scope="row"><%= categoria.id %></th>
+                        <td><%= categoria.descricao %></td>
+                        <td width="10%">
+                            <button type="button" onclick="openModal('categoria_<%= categoria.id %>')"
+                                    class="btn-dark btn-lg btn-block"><i
+                                        class="fa fa-edit"></i>
+                            </button>
+                        </td>
+                        <td width="10%">
+                            <form action="delete-categoria">
+                                <input type="hidden" name="categoria_id" value="<%= categoria.id %>">
+                                <button type="submit" :syncing="syncing" class="btn-danger btn-lg btn-block"><i
+                                            class="fa fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }) %>
+                </tbody>
+            </table>
+        </div>
 
-  <router-view></router-view>
+    <% } %>
+    <router-view></router-view>
+    <% if(produtos) { %>
+      <% produtos.forEach(function(produto)  { %>
+          <div id="modal_edit_produto_<%= produto.id %>" class="modal" tabindex="-1" role="dialog">
+              <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title">Editar produto</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                          </button>
+                      </div>
+                      <form action="edit-produto" method="post">
+                          <input type="hidden" name="_csrf" value="<%= _csrf %>"/>
+                          <input value="<%= produto.id %>" name="produto_id" type="hidden">
+                          <div class="modal-body">
+                              <div class="form-group">
+                                  <label>Descrição</label>
+                                  <input class="form-control" name="descricao" type="text"
+                                        value="<%= produto.descricao %>">
+                              </div>
+                              <div class="form-group">
+                                  <label>Preço</label>
+                                  <input class="form-control" name="preco" type="text" value="<%= produto.preco %>">
+                              </div>
+                              <div class="form-group">
+                                  <label>Quantidade</label>
+                                  <input class="form-control" name="quantidade" type="text"
+                                        value="<%= produto.quantidade %>">
+                              </div>
+                              <input class="form-control" id="fotoBase64_<%= produto.id %>" name="fotoBase64"
+                                    type="hidden">
+                              <div class="form-group">
+                                  <label>Foto</label>
+                                  <input class="form-control" id="_<%= produto.id %>" name="foto" type="file"
+                                        accept="image/png, image/jpeg"
+                                        onchange="onFotoInputEdit(this)">
+                              </div>
+                              <div class="form-group">
+                                  <label for="categorias">Categorias</label>
+                                  <select class="custom-select" name="categorias" multiple>
+                                    <% if(!!categorias && !!produto && produto.categorias ) { %>
+                                      <% categorias.forEach(function(categoria)  { %>
+                                          <% if(produto.categorias.includes(categoria.descricao)){ %>
+                                              <option selected
+                                                      value="<%= categoria.id %>"><%= categoria.descricao %></option>
+                                          <% } else { %>
+                                              <option value="<%= categoria.id %>"><%= categoria.descricao %></option>
+                                          <% } %>
+                                      <% }) %>
+                                    <% } %>
+                                  </select>
+                              </div>
+                          </div>
+                          <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                              <button type="submit" class="btn btn-primary">Atualizar</button>
+                          </div>
+                      </form>
+                  </div>
+              </div>
+          </div>
+      <% }) %>
+    <% } %>
+
+    <% if(categorias) { %>
+      <% categorias.forEach(function(categoria)  { %>
+          <div id="modal_edit_categoria_<%= categoria.id %>" class="modal" tabindex="-1" role="dialog">
+              <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title">Editar categoria</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                          </button>
+                      </div>
+                      <form action="edit-categoria" method="get">
+                          <input value="<%= categoria.id %>" name="categoria_id" type="hidden">
+                          <div class="modal-body">
+                              <div class="form-group">
+                                  <label>Descrição</label>
+                                  <input class="form-control" name="descricao" type="text"
+                                        value="<%= categoria.descricao %>">
+                              </div>
+                          </div>
+                          <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                              <button type="submit" class="btn btn-primary">Atualizar</button>
+                          </div>
+                      </form>
+                  </div>
+              </div>
+          </div>
+      <% }) %>
+    <% } %>
+    <div id="modal_edit_admin" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar cadastro</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="edit-admin" method="get">
+                    <input value="<%= me?me.id:'' %>" name="admin_id" type="hidden">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Nome</label>
+                            <input class="form-control" name="nome" type="text" value="<%= me? me.nome : '' %>">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input class="form-control" name="email" type="text" value="<%= me? me.email : '' %>">
+                        </div>
+                        <div class="form-group">
+                            <label>Login</label>
+                            <input class="form-control" name="login" type="text" value="<%= me? me.login : '' %>">
+                        </div>
+                        <div class="form-group">
+                            <label>Senha</label>
+                            <input class="form-control" name="senha" type="text" value="<%= me? me.senha : '' %>">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-primary">Atualizar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script>
+    const toBase64 = file => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
+
+    function openModal(id) {
+        $('#modal_edit_' + id).modal('show')
+    }
+
+    async function onFotoInputEdit(input) {
+        hold(input.id, 'fotoBase64' + input.id)
+    }
+
+    async function onFotoInput() {
+        hold('foto', 'fotoBase64')
+    }
+
+    async function hold(fileInput, textHiddenInput) {
+        let v = await toBase64(document.querySelector('#' + fileInput).files[0])
+        document.getElementById(textHiddenInput).value = v;
+
+        let event = new Event('input', {
+            bubbles: true,
+            cancelable: true,
+        });
+
+        document.getElementById(textHiddenInput).dispatchEvent(event);
+        console.log(document.getElementById(textHiddenInput).value)
+    }
+
+</script>
 <%- /* Expose locals as `window.SAILS_LOCALS` :: */ exposeLocalsToBrowser() %>
