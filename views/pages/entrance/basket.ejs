@@ -34,7 +34,7 @@
     <h2 v-if="!bought">Total: {{total}}</h2>
     <div class="d-flex w-100 justify-content-center"> 
       <% if(me) {%>
-        <button  @click="success()" class="btn btn-outline-info mt-3" v-if="!bought">Comprar</button>
+        <a class="btn btn-outline-info mt-3" v-if="!bought" href="/purchase">Comprar</a>
       <% } else { %>
         <button  @click="fail()" class="btn btn-outline-info mt-3" v-if="!bought">Comprar</button>
       <% } %> 
