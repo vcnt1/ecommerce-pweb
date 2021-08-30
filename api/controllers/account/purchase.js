@@ -25,7 +25,6 @@ module.exports = {
 
   
     fn: async function () {
-        this.req.cookies.produtos = [1,2,3]
         if(this.req.cookies && this.req.cookies.produtos ){
             const produtos= this.req.cookies.produtos
             CompraDAO.create({
