@@ -11,10 +11,10 @@ module.exports = {
             type: 'number',
             columnName: 'cliente_id'
         },
-        // dataHora: {
-        //     type: 'ref',
-        //     columnType: 'datetime',
-        //     columnName: 'data_hora'
-        // },
+         dataHora: {
+            type: 'ref',
+            //columnType: 'datetime',
+            columnName: 'data_hora'
+         },
     },
 };
