@@ -40,6 +40,15 @@ parasails.registerPage('basket', {
   //  ║  ║╠╣ ║╣ ║  ╚╦╝║  ║  ║╣
   //  ╩═╝╩╚  ╚═╝╚═╝ ╩ ╚═╝╩═╝╚═╝
   beforeMount: function() {
+      if(document.cookie === ''){
+        document.cookie = '[]';
+      }
+      const arrProdutos = JSON.parse(document.cookie)
+      arrProdutos.map(produto => {
+        if(this.items.includes(produto)){
+          this.items= [...this.items,{nome: produto}]
+        }
+      })
   },
   mounted: async function(){
     this.refreshValue();

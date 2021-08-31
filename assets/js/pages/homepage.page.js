@@ -21,6 +21,23 @@ parasails.registerPage('homepage', {
   //  ╩╝╚╝ ╩ ╚═╝╩╚═╩ ╩╚═╝ ╩ ╩╚═╝╝╚╝╚═╝
   methods: {
 
+    addToBasket: async function(idProduto){
+      this.animation();
+      if(document.cookie === ''){
+        document.cookie = '[]';
+      }
+      const arrProdutos = JSON.parse(document.cookie)
+
+      arrProdutos.push(idProduto)
+
+      document.cookie = JSON.stringify(arrProdutos)
+    },
+
+    animation: async function(){
+      let iconeCesta = document.getElementById("basketIcon");
+      iconeCesta.style.animation = '';
+      setTimeout(() =>iconeCesta.style.animation = 'piscar 1s linear', 1);
+    },
     clickHeroButton: async function() {
       // Scroll to the 'get started' section:
       $('html, body').animate({

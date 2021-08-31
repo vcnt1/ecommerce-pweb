@@ -25,17 +25,23 @@ module.exports = {
 
   
     fn: async function () {
-        if(this.req.cookies && this.req.cookies.produtos ){
-            const produtos= this.req.cookies.produtos
+      console.log(this.req.headers)
+      if(this.req.headers.cookie){
+        this.req.headers.cookie.split(";").map(cookie => {
+          if(cookie.endsWith("]")){
+            arrProdutos = JSON.parse(cookie)
             CompraDAO.create({
-                clienteId: this.req.session.userId,
-                produtos: produtos
+              clienteId: this.req.session.userId,
+              produtos: arrProdutos
             })
+
             throw {redirect: "/success"}
-        }
-        else{
-            throw "notFound"
-        }
+          }
+        })
+        throw "notFound"
+      }else{
+        throw "notFound"
+      }
     }
   };
   
