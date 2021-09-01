@@ -1,0 +1,83 @@
+<div id="relatorios">
+    <% if(!req.session.isAdmin) { %>
+        <div class="container pt-5 pb-5">
+            <h1>Essa página é restrita para administradores</h1>
+            <hr/>
+        </div>
+    <% } else { %>
+        <div class="container pt-5 pb-5">
+            <div class="container pt-5">
+                <h3>Relatórios</h3>
+                <p>Veja seus dados de forma agrupada.</p>
+                <form action="relatorios">
+                    <div class="d-flex">
+                        <input class="mr-4" type="date" name="dataInicio">
+                        <input  class="mr-4" type="date" name="dataFim">
+                        <button class="btn btn-primary">Pesquisar</button>
+                    </div>
+                </form>
+                <h5 class="mt-4">Total de compras por cliente</h5>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Compras</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% if(typeof totalComprasPorCliente !== 'undefined') {
+                    totalComprasPorCliente.forEach(function(el)  { %>
+                        <tr>
+                            <td><%= el.id %></td>
+                            <td><%= el.nome %></td>
+                            <td><%= el.total_compras %></td>
+                        </tr>
+                    <% })
+                    } %>
+                    </tbody>
+                </table>
+                <h5 class="mt-4">Total apurado por dia</h5>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Data</th>
+                        <th scope="col">Total(R$)</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% if(typeof totalApuradoPorData !== 'undefined') {
+                    totalApuradoPorData.forEach(function(el)  { %>
+                        <tr>
+                            <td><%= el.data.toLocaleDateString() %></td>
+                            <td><%= el.total %></td>
+                        </tr>
+                    <% })
+                    } %>
+                    </tbody>
+                </table>
+                <h5 class="mt-4">Produtos sem estoque</h5>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Preço(R$)</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% if(typeof produtosIndisponiveis !== 'undefined') {
+                    produtosIndisponiveis.forEach(function(el)  { %>
+                        <tr>
+                            <td><%= el.id %></td>
+                            <td><%= el.descricao %></td>
+                            <td><%= el.preco %></td>
+                        </tr>
+                    <% })
+                    } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    <% } %>
+</div>
