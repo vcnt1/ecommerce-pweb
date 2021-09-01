@@ -10,7 +10,6 @@ parasails.registerPage('homepage', {
   //  ║  ║╠╣ ║╣ ║  ╚╦╝║  ║  ║╣
   //  ╩═╝╩╚  ╚═╝╚═╝ ╩ ╚═╝╩═╝╚═╝
   beforeMount: function() {
-    //…
   },
   mounted: async function(){
     this._setHeroHeight();
@@ -27,8 +26,15 @@ parasails.registerPage('homepage', {
         document.cookie = '[]';
       }
       const arrProdutos = JSON.parse(document.cookie)
+      let arrProdutosSanitized = arrProdutos.filter(({id})=> id === idProduto)
 
-      arrProdutos.push(idProduto)
+      if(arrProdutosSanitized.length === 0){
+        arrProdutos.push({id: idProduto, quantidade: 1})
+      } else {
+        let indexRepetido = arrProdutos.indexOf(arrProdutosSanitized[0])
+        arrProdutos.splice(indexRepetido, 1)
+        arrProdutos.push({id: arrProdutosSanitized[0].id, quantidade: arrProdutosSanitized[0].quantidade + 1})
+      }
 
       document.cookie = JSON.stringify(arrProdutos)
     },

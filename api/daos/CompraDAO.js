@@ -5,8 +5,9 @@ module.exports = {
 
         await sails.getDatastore().sendNativeQuery('INSERT INTO compras(id, cliente_id, data_hora) VALUES($1, $2, CURRENT_TIMESTAMP);', [compraId, params.clienteId])
         console.log(params.produtos)
-        for (const id of params.produtos) {
-            await sails.getDatastore().sendNativeQuery('INSERT INTO compras_produtos(produto_id, compra_id) VALUES($1, $2);', [id, compraId])
+        for (const produto of params.produtos) {
+            await sails.getDatastore().sendNativeQuery('INSERT INTO compras_produtos(produto_id, compra_id, quantidade) VALUES($1, $2, $3);', [produto.id, compraId, produto.quantidade])
+            await sails.getDatastore().sendNativeQuery('UPDATE produtos set quantidade = (select quantidade from produtos where id= $1) - $2 where id = $1',[produto.id,produto.quantidade])
         }
     },
     async list() {

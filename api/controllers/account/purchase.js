@@ -25,7 +25,6 @@ module.exports = {
 
   
     fn: async function () {
-      console.log(this.req.headers)
       if(this.req.headers.cookie){
         this.req.headers.cookie.split(";").map(cookie => {
           if(cookie.endsWith("]")){

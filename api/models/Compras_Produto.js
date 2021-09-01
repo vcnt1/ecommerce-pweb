@@ -11,6 +11,11 @@ module.exports = {
             required: true,
             columnName: 'compra_id'
         },
+        quantidade: {
+            type: 'number',
+            required: true,
+            columnName: 'quantidade'
+        },
         
     }
   };
