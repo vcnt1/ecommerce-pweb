@@ -37,8 +37,9 @@ module.exports.routes = {
   '/logout':                  '/api/v1/account/logout',
   '/exclude':                  '/api/v1/account/exclude',
   '/purchase':                  '/api/v1/account/purchase',
-  'GET /success':                {action: 'entrance/view-success'}  ,
+  'GET /success':                {action: 'entrance/view-success'},
 
+  'GET /relatorios':                {action: 'dashboard/relatorios'},
 
   'GET /create-categoria':            { action: 'dashboard/create-categoria' },
   'GET /edit-categoria':            { action: 'dashboard/edit-categoria' },

@@ -61,7 +61,7 @@ module.exports = {
         }
     },
     async getCategorias(id) {
-        let categoriasQuery = await sails.getDatastore().sendNativeQuery('SELECT cp.descricao FROM categorias_produtos cp INNER JOIN categorias cat ON cat.id = cp.categoria_id WHERE cp.produto_id = $1;', [id])
+        let categoriasQuery = await sails.getDatastore().sendNativeQuery('SELECT cat.descricao FROM categorias_produtos cp INNER JOIN categorias cat ON cat.id = cp.categoria_id WHERE cp.produto_id = $1;', [id])
 
         if (categoriasQuery.rowCount == 0) return 'Nenhuma'
 
