@@ -25,8 +25,11 @@
             <div class="d-flex justify-content-between">
                 <h1>Bem-vindo, {{me ?me.nome:''}}!</h1>
                 <div class="w-25 d-flex" style="height: 50px">
+                    <a class="w-50" href="/relatorios"><button type="button" class="btn-dark btn-lg btn-block"><i
+                                class="fa fa-file"></i>
+                    </button></a>
                     <button type="button" onclick="openModal('admin')"
-                            class="btn-dark btn-lg btn-block w-50"><i
+                            class="btn-dark btn-lg btn-block w-50 ml-2"><i
                                 class="fa fa-edit"></i>
                     </button>
                     <form class="w-50 ml-2" style="height: 50px" action="delete-admin">

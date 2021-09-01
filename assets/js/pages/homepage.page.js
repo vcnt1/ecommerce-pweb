@@ -10,7 +10,6 @@ parasails.registerPage('homepage', {
   //  ║  ║╠╣ ║╣ ║  ╚╦╝║  ║  ║╣
   //  ╩═╝╩╚  ╚═╝╚═╝ ╩ ╚═╝╩═╝╚═╝
   beforeMount: function() {
-    //…
   },
   mounted: async function(){
     this._setHeroHeight();
@@ -21,6 +20,30 @@ parasails.registerPage('homepage', {
   //  ╩╝╚╝ ╩ ╚═╝╩╚═╩ ╩╚═╝ ╩ ╩╚═╝╝╚╝╚═╝
   methods: {
 
+    addToBasket: async function(idProduto){
+      this.animation();
+      if(document.cookie === ''){
+        document.cookie = '[]';
+      }
+      const arrProdutos = JSON.parse(document.cookie)
+      let arrProdutosSanitized = arrProdutos.filter(({id})=> id === idProduto)
+
+      if(arrProdutosSanitized.length === 0){
+        arrProdutos.push({id: idProduto, quantidade: 1})
+      } else {
+        let indexRepetido = arrProdutos.indexOf(arrProdutosSanitized[0])
+        arrProdutos.splice(indexRepetido, 1)
+        arrProdutos.push({id: arrProdutosSanitized[0].id, quantidade: arrProdutosSanitized[0].quantidade + 1})
+      }
+
+      document.cookie = JSON.stringify(arrProdutos)
+    },
+
+    animation: async function(){
+      let iconeCesta = document.getElementById("basketIcon");
+      iconeCesta.style.animation = '';
+      setTimeout(() =>iconeCesta.style.animation = 'piscar 1s linear', 1);
+    },
     clickHeroButton: async function() {
       // Scroll to the 'get started' section:
       $('html, body').animate({
