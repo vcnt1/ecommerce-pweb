@@ -43,9 +43,11 @@
                                             <tbody>
                                             <% if(typeof compra.produtos !== 'undefined') {
                                             compra.produtos.forEach(function(compra)  { %>
-                                                <td scope="row"><%= compra.descricao %></td>
-                                                <td><%= compra.preco %></td>
-                                                <td><%= compra.quantidade %></td>
+                                                <tr>
+                                                    <td scope="row"><%= compra.descricao %></td>
+                                                    <td><%= compra.preco %></td>
+                                                    <td><%= compra.quantidade %></td>
+                                                </tr>
                                             <% })
                                             } %>
                                             </tbody>

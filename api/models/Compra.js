@@ -18,11 +18,7 @@ module.exports = {
         },
     },
     async getAll() {
-        let query = await sails.getDatastore().sendNativeQuery('SELECT c.id, data_hora, nome \n' +
-            'FROM compras c \n' +
-            'INNER JOIN clientes cl ON c.cliente_id = cl.id \n' +
-            'INNER JOIN compras_produtos cp ON cp.compra_id = c.id \n' +
-            'INNER JOIN produtos p ON cp.produto_id = p.id;')
+        let query = await sails.getDatastore().sendNativeQuery('SELECT c.id, data_hora, nome FROM compras c INNER JOIN clientes cl ON c.cliente_id = c.id;')
 
         let compras = query.rows
         if (compras.length == 0) {
@@ -40,11 +36,7 @@ module.exports = {
         return c
     },
     async getByClienteId(id) {
-        let query = await sails.getDatastore().sendNativeQuery('SELECT c.id, data_hora, nome \n' +
-            'FROM compras c \n' +
-            'INNER JOIN clientes cl ON c.cliente_id = cl.id \n' +
-            'INNER JOIN compras_produtos cp ON cp.compra_id = c.id \n' +
-            'INNER JOIN produtos p ON cp.produto_id = p.id WHERE cl.id = $1;', [id])
+        let query = await sails.getDatastore().sendNativeQuery('SELECT c.id, data_hora, nome FROM compras c INNER JOIN clientes cl ON c.cliente_id = c.id WHERE cl.id = $1;', [id])
         let compras = query.rows
         if (compras.length == 0) {
             return []
@@ -57,6 +49,8 @@ module.exports = {
             el.produtos = produtos.rows
             c.push(el)
         }
+
+        console.log(c)
 
         return c
     },
