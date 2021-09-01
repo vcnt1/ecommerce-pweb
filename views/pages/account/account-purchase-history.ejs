@@ -1,29 +1,67 @@
 <div id="account-purchase-history" v-cloak>
-  <account-notification-banner></account-notification-banner>
-  <div class="container mt-5 pb-5">
-    <h1>Minhas compras</h1>
-    <hr/>
-    <table class="table">
-      <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Cliente</th>
-        <th scope="col">Data/hora</th>
-      </tr>
-      </thead>
-      <tbody>
-      <%  if(typeof compras !== 'undefined') {
-      compras.forEach(function(compra)  { %>
-        <tr>
-          <th scope="row"><%= compra.id %></th>
-          <th scope="row"><%= compra.nome %></th>
-          <th scope="row"><%= compra.data.toLocaleDateString() %></th>
-        </tr>
-      <% })
-      }%>
-      </tbody>
-    </table>
-  </div>
+    <account-notification-banner></account-notification-banner>
+    <div class="container mt-5 pb-5">
+        <h1>Minhas compras</h1>
+        <hr/>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Cliente</th>
+                <th scope="col">Data/hora</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <% if(typeof compras !== 'undefined') {
+            compras.forEach(function(compra, i)  { %>
+                <tr>
+                    <td scope="row"><%= compra.id %></td>
+                    <td><%= compra.nome %></td>
+                    <td><%= compra.data_hora.toLocaleDateString() %></td>
+                    <td>
+                        <div class="accordion" id="accordionExample">
+                            <div class="card">
+                                <div class="card-header" id="headingOne">
+                                    <button class="btn btn-link" type="button" data-toggle="collapse"
+                                            data-target="#collapse_<%= i %>" aria-expanded="true" aria-controls="collapseOne">
+                                        Produtos
+                                    </button>
+
+                                </div>
+                                <div id="collapse_<%= i %>" class="collapse show" aria-labelledby="headingOne"
+                                     data-parent="#accordionExample">
+                                    <div class="card-body">
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col">Nome</th>
+                                                <th scope="col">Preço</th>
+                                                <th scope="col">Quantidade</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <% if(typeof compra.produtos !== 'undefined') {
+                                            compra.produtos.forEach(function(compra)  { %>
+                                                <td scope="row"><%= compra.descricao %></td>
+                                                <td><%= compra.preco %></td>
+                                                <td><%= compra.quantidade %></td>
+                                            <% })
+                                            } %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+            <% })
+            } %>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <%- /* Expose locals as `window.SAILS_LOCALS` :: */ exposeLocalsToBrowser() %>
